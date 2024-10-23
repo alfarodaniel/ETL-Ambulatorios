@@ -15,7 +15,6 @@ Se procesan los reportes de DGH "fecha_cita.xlsx", "oportunidad_fecha_citaBD.xls
 import pandas as pd
 import numpy as np
 import requests
-import io
 import duckdb
 import os
 

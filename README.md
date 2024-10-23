@@ -11,4 +11,4 @@ Después de procesar los archivos genera los archivos:
 - Vacíos de fecha - FechaVacias.xlsx
 - Vacíos de oportunidad - Oportunidad_citaVacias.xlsx
 - Errores en tipo cita - Oportunidad_citaTipoCitaError.xlsx
-- Pivote resultante Consulta externa - Consulta_externa.xlsx
+- Pivotes resultantes - Consulta_pivote.xlsx

@@ -7,7 +7,7 @@ Se procesan los reportes de DGH "fecha_cita.xlsx", "oportunidad_fecha_citaBD.xls
 2. Vacíos de fecha - FechaVacias.xlsx
 3. Vacíos de oportunidad - Oportunidad_citaVacias.xlsx
 4. Errores en tipo cita - Oportunidad_citaTipoCitaError.xlsx
-5. Pivote resultante Consulta externa - Consulta_externa.xlsx
+5. Pivotes resultante - Consulta_pivote.xlsx
 """
 # %% Cargar archivos
 

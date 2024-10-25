@@ -153,53 +153,53 @@ dfOportunidad_cita['Reprogramadas'] = np.where(
 dfOportunidad_cita_Atendida = dfOportunidad_cita[dfOportunidad_cita['Estado Cita'] == 'Atendida']
 
 # Crear la tabla pivote Asignadas
-pivote_Asignadas = dfOportunidad_cita.groupby(['TIPO 2', 'Sede', 'Nombre Especialidad']).size().reset_index(name='Asignadas')
+pivote_Asignadas = dfOportunidad_cita.groupby(['TIPO 2', 'Sede', 'Servicio Nieto']).size().reset_index(name='Asignadas')
 
 # Pivote Estado
 
 # Crear la tabla pivote Estados
-pivote_Estados = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
+pivote_Estados = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Reprogramadas
 
 # Crear la tabla pivote Estados
-pivote_Reprogramadas = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
+pivote_Reprogramadas = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Tipo
 
 # Crear la tabla pivote Atendida Tipo
-pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
+pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Vinculacion
 
 # Crear la tabla pivote Atendida Vinculacion
-pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
+pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Tipo
 
 # Crear la tabla pivote Tipo
-pivote_Tipo = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
+pivote_Tipo = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Tipo Oportunidad
 
 # Crear la tabla pivote Tipo Oportunidad
-pivote_TipoOportunidad = dfOportunidad_cita.pivot_table(values='Oportunidad', index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
+pivote_TipoOportunidad = dfOportunidad_cita.pivot_table(values='Oportunidad', index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
 
 # Pivote Tipo Asignacion
 
 # Crear la tabla pivote Tipo Asignacion
-pivote_TipoAsignacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Nombre Especialidad'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
+pivote_TipoAsignacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'Servicio Nieto'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
 
 # Combinar pivotes en dfConsulta_externa
 
 # Combinar los pivotes en dfConsulta_externa
-dfConsulta_pivote = pd.merge(pivote_Asignadas, pivote_Estados, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Reprogramadas, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaTipo, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaVinculacion, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Tipo, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['TIPO 2', 'Sede', 'Nombre Especialidad'], how='left')
+dfConsulta_pivote = pd.merge(pivote_Asignadas, pivote_Estados, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Reprogramadas, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaTipo, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaVinculacion, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Tipo, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['TIPO 2', 'Sede', 'Servicio Nieto'], how='left')
 
 # Crear columan 'Reales' como la suma de 'Programado' + 'No Reprogramada' + 'Reprogramada' + 'Extra'
 dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] + dfConsulta_pivote['No Reprogramada'] + dfConsulta_pivote['Reprogramada'] + dfConsulta_pivote['Extra']
@@ -222,7 +222,7 @@ dfConsulta_pivote['val2'] = np.where(dfConsulta_pivote['Vinculado'] + dfConsulta
                                      dfConsulta_pivote['Primer Vez_x'] + dfConsulta_pivote['Control_x'], 'Ok', 'Error')
 
 # Seleccionar las columnas finales
-dfConsulta_pivote = dfConsulta_pivote[['TIPO 2', 'Sede', 'Nombre Especialidad', 'Asignadas', 'Reales',
+dfConsulta_pivote = dfConsulta_pivote[['TIPO 2', 'Sede', 'Servicio Nieto', 'Asignadas', 'Reales',
                                        'Asignadas', 'Reprogramada', 'Cancelada_x', 'Incumplida_x', 'Primer Vez_x',
                                        'Control_x', 'Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
                                        'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',

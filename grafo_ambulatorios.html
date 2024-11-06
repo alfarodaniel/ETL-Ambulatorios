@@ -1,0 +1,693 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="fecha_citas_Fuente_de_la_Cita">fecha_citas_Fuente_de_la_Cita</option>
+                                
+                                    <option value="fecha_citas">fecha_citas</option>
+                                
+                                    <option value="fecha_citas_Documento_de_la_Cita">fecha_citas_Documento_de_la_Cita</option>
+                                
+                                    <option value="Condicion_igual_no_vacio_Documento_de_la_Cita">Condicion_igual_no_vacio_Documento_de_la_Cita</option>
+                                
+                                    <option value="fecha_citas_Fecha_de_Grabacion">fecha_citas_Fecha_de_Grabacion</option>
+                                
+                                    <option value="Condicion_vacia_Fecha_de_Grabacion">Condicion_vacia_Fecha_de_Grabacion</option>
+                                
+                                    <option value="fecha_citas_Carnet">fecha_citas_Carnet</option>
+                                
+                                    <option value="fecha_citas_Identificacion_del_Responsable">fecha_citas_Identificacion_del_Responsable</option>
+                                
+                                    <option value="fecha_citas_Nombre_Responsable">fecha_citas_Nombre_Responsable</option>
+                                
+                                    <option value="fecha_citas_Concepto_Facturacion">fecha_citas_Concepto_Facturacion</option>
+                                
+                                    <option value="fecha_citas_Codigo_Producto_CUPS">fecha_citas_Codigo_Producto_CUPS</option>
+                                
+                                    <option value="oportunidad_cita_Codigo_Producto_CUPS">oportunidad_cita_Codigo_Producto_CUPS</option>
+                                
+                                    <option value="fecha_citas_Especialidad">fecha_citas_Especialidad</option>
+                                
+                                    <option value="oportunidad_cita_Especialidad">oportunidad_cita_Especialidad</option>
+                                
+                                    <option value="fecha_citas_Nombre_Especialidad">fecha_citas_Nombre_Especialidad</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Especialidad">oportunidad_cita_Nombre_Especialidad</option>
+                                
+                                    <option value="fecha_citas_Fecha_Cita">fecha_citas_Fecha_Cita</option>
+                                
+                                    <option value="fecha_citas_Hora_Cita">fecha_citas_Hora_Cita</option>
+                                
+                                    <option value="fecha_citas_TIPO_CITA">fecha_citas_TIPO_CITA</option>
+                                
+                                    <option value="fecha_citas_Fecha_Preferencia_Paciente">fecha_citas_Fecha_Preferencia_Paciente</option>
+                                
+                                    <option value="fecha_citas_Estructura_Administrativa">fecha_citas_Estructura_Administrativa</option>
+                                
+                                    <option value="oportunidad_cita_Estructura_Administrativa">oportunidad_cita_Estructura_Administrativa</option>
+                                
+                                    <option value="fecha_citas_Sede">fecha_citas_Sede</option>
+                                
+                                    <option value="oportunidad_cita_Sede">oportunidad_cita_Sede</option>
+                                
+                                    <option value="fecha_citas_Medico">fecha_citas_Medico</option>
+                                
+                                    <option value="oportunidad_cita_Medico">oportunidad_cita_Medico</option>
+                                
+                                    <option value="fecha_citas_Nombre_Medico">fecha_citas_Nombre_Medico</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Medico">oportunidad_cita_Nombre_Medico</option>
+                                
+                                    <option value="fecha_citas_Estado_Cita">fecha_citas_Estado_Cita</option>
+                                
+                                    <option value="fecha_citas_Duracion_Cita">fecha_citas_Duracion_Cita</option>
+                                
+                                    <option value="oportunidad_cita_Duracion_Cita">oportunidad_cita_Duracion_Cita</option>
+                                
+                                    <option value="fecha_citas_Usuario">fecha_citas_Usuario</option>
+                                
+                                    <option value="fecha_citas_Nombre_usuario">fecha_citas_Nombre_usuario</option>
+                                
+                                    <option value="fecha_citas_Primer_Apellido_usuario">fecha_citas_Primer_Apellido_usuario</option>
+                                
+                                    <option value="fecha_citas_Segundo_Apellido_usuario">fecha_citas_Segundo_Apellido_usuario</option>
+                                
+                                    <option value="fecha_citas_Numero_Ingreso">fecha_citas_Numero_Ingreso</option>
+                                
+                                    <option value="fecha_citas_Primer_Apellido_Paciente">fecha_citas_Primer_Apellido_Paciente</option>
+                                
+                                    <option value="fecha_citas_Segundo_Apellido_Paciente">fecha_citas_Segundo_Apellido_Paciente</option>
+                                
+                                    <option value="fecha_citas_Nombre_Paciente">fecha_citas_Nombre_Paciente</option>
+                                
+                                    <option value="fecha_citas_Fecha_Nacimiento">fecha_citas_Fecha_Nacimiento</option>
+                                
+                                    <option value="fecha_citas_Identificacion">fecha_citas_Identificacion</option>
+                                
+                                    <option value="fecha_citas_Tipo_Doc">fecha_citas_Tipo_Doc</option>
+                                
+                                    <option value="fecha_citas_Nacionalidad">fecha_citas_Nacionalidad</option>
+                                
+                                    <option value="oportunidad_cita_Nacionalidad">oportunidad_cita_Nacionalidad</option>
+                                
+                                    <option value="fecha_citas_Telefono">fecha_citas_Telefono</option>
+                                
+                                    <option value="fecha_citas_Sexo_Paciente">fecha_citas_Sexo_Paciente</option>
+                                
+                                    <option value="fecha_citas_Barrio">fecha_citas_Barrio</option>
+                                
+                                    <option value="oportunidad_cita_Barrio">oportunidad_cita_Barrio</option>
+                                
+                                    <option value="fecha_citas_Nombre_Barrio">fecha_citas_Nombre_Barrio</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Barrio">oportunidad_cita_Nombre_Barrio</option>
+                                
+                                    <option value="fecha_citas_Localidad">fecha_citas_Localidad</option>
+                                
+                                    <option value="oportunidad_cita_Localidad">oportunidad_cita_Localidad</option>
+                                
+                                    <option value="fecha_citas_Nombre_Localidad">fecha_citas_Nombre_Localidad</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Localidad">oportunidad_cita_Nombre_Localidad</option>
+                                
+                                    <option value="fecha_citas_Servicio_Nieto">fecha_citas_Servicio_Nieto</option>
+                                
+                                    <option value="oportunidad_cita_Servicio_Nieto">oportunidad_cita_Servicio_Nieto</option>
+                                
+                                    <option value="fecha_citas_Regimen">fecha_citas_Regimen</option>
+                                
+                                    <option value="fecha_citas_Grupo_Usuario">fecha_citas_Grupo_Usuario</option>
+                                
+                                    <option value="fecha_citas_Tipo_Asignacion">fecha_citas_Tipo_Asignacion</option>
+                                
+                                    <option value="oportunidad_cita_Tipo_Asignacion">oportunidad_cita_Tipo_Asignacion</option>
+                                
+                                    <option value="fecha_citas_CIE10_DIAGNOSTICO">fecha_citas_CIE10_DIAGNOSTICO</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Documento_de_la_Cita">oportunidad_fecha_citabd_Documento_de_la_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd">oportunidad_fecha_citabd</option>
+                                
+                                    <option value="oportunidad_cita_Documento_de_la_Cita">oportunidad_cita_Documento_de_la_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Fecha_de_Grabacion">oportunidad_fecha_citabd_Fecha_de_Grabacion</option>
+                                
+                                    <option value="oportunidad_cita_Fecha_de_Grabacion">oportunidad_cita_Fecha_de_Grabacion</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Identificacion_del_Responsable">oportunidad_fecha_citabd_Identificacion_del_Responsable</option>
+                                
+                                    <option value="oportunidad_cita_Identificacion_del_Responsable">oportunidad_cita_Identificacion_del_Responsable</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Nombre_Responsable">oportunidad_fecha_citabd_Nombre_Responsable</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Responsable">oportunidad_cita_Nombre_Responsable</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Especialidad">oportunidad_fecha_citabd_Especialidad</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Nombre_Especialidad">oportunidad_fecha_citabd_Nombre_Especialidad</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Fecha_Cita">oportunidad_fecha_citabd_Fecha_Cita</option>
+                                
+                                    <option value="oportunidad_cita_Fecha_Cita">oportunidad_cita_Fecha_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Hora_Cita">oportunidad_fecha_citabd_Hora_Cita</option>
+                                
+                                    <option value="oportunidad_cita_Hora_Cita">oportunidad_cita_Hora_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_TIPO_CITA">oportunidad_fecha_citabd_TIPO_CITA</option>
+                                
+                                    <option value="oportunidad_cita_TIPO_CITA">oportunidad_cita_TIPO_CITA</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Fecha_Preferencia_Paciente">oportunidad_fecha_citabd_Fecha_Preferencia_Paciente</option>
+                                
+                                    <option value="oportunidad_cita_Fecha_Preferencia_Paciente">oportunidad_cita_Fecha_Preferencia_Paciente</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Estructura_Administrativa">oportunidad_fecha_citabd_Estructura_Administrativa</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Sede">oportunidad_fecha_citabd_Sede</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Medico">oportunidad_fecha_citabd_Medico</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Nombre_Medico">oportunidad_fecha_citabd_Nombre_Medico</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Estado_Cita">oportunidad_fecha_citabd_Estado_Cita</option>
+                                
+                                    <option value="oportunidad_cita_Estado_Cita">oportunidad_cita_Estado_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Duracion_Cita">oportunidad_fecha_citabd_Duracion_Cita</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Usuario">oportunidad_fecha_citabd_Usuario</option>
+                                
+                                    <option value="oportunidad_cita_Usuario">oportunidad_cita_Usuario</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Grupo_Usuario">oportunidad_fecha_citabd_Grupo_Usuario</option>
+                                
+                                    <option value="oportunidad_cita_Grupo_Usuario">oportunidad_cita_Grupo_Usuario</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Ingreso">oportunidad_fecha_citabd_Ingreso</option>
+                                
+                                    <option value="oportunidad_cita_Ingreso">oportunidad_cita_Ingreso</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Primer_Apellido_Paciente">oportunidad_fecha_citabd_Primer_Apellido_Paciente</option>
+                                
+                                    <option value="oportunidad_cita_Primer_Apellido_Paciente">oportunidad_cita_Primer_Apellido_Paciente</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Segundo_Apellido_Paciente">oportunidad_fecha_citabd_Segundo_Apellido_Paciente</option>
+                                
+                                    <option value="oportunidad_cita_Segundo_Apellido_Paciente">oportunidad_cita_Segundo_Apellido_Paciente</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Nombre_Paciente">oportunidad_fecha_citabd_Nombre_Paciente</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Paciente">oportunidad_cita_Nombre_Paciente</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Fecha_Nacimiento">oportunidad_fecha_citabd_Fecha_Nacimiento</option>
+                                
+                                    <option value="oportunidad_cita_Fecha_Nacimiento">oportunidad_cita_Fecha_Nacimiento</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_EDAD">oportunidad_fecha_citabd_EDAD</option>
+                                
+                                    <option value="oportunidad_cita_EDAD">oportunidad_cita_EDAD</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Identificacion">oportunidad_fecha_citabd_Identificacion</option>
+                                
+                                    <option value="oportunidad_cita_Identificacion">oportunidad_cita_Identificacion</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Tipo_Doc">oportunidad_fecha_citabd_Tipo_Doc</option>
+                                
+                                    <option value="oportunidad_cita_Tipo_Doc">oportunidad_cita_Tipo_Doc</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Telefono">oportunidad_fecha_citabd_Telefono</option>
+                                
+                                    <option value="oportunidad_cita_Telefono">oportunidad_cita_Telefono</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Sexo_Paciente">oportunidad_fecha_citabd_Sexo_Paciente</option>
+                                
+                                    <option value="oportunidad_cita_Sexo_Paciente">oportunidad_cita_Sexo_Paciente</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Servicio_Nieto">oportunidad_fecha_citabd_Servicio_Nieto</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Especialidad2">oportunidad_fecha_citabd_Especialidad2</option>
+                                
+                                    <option value="oportunidad_cita_Especialidad2">oportunidad_cita_Especialidad2</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Tipo_Valida">oportunidad_fecha_citabd_Tipo_Valida</option>
+                                
+                                    <option value="oportunidad_cita_Tipo_Valida">oportunidad_cita_Tipo_Valida</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Vinculacion">oportunidad_fecha_citabd_Vinculacion</option>
+                                
+                                    <option value="oportunidad_cita_Vinculacion">oportunidad_cita_Vinculacion</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_OPORTUNIDAD_INST">oportunidad_fecha_citabd_OPORTUNIDAD_INST</option>
+                                
+                                    <option value="oportunidad_cita_OPORTUNIDAD_INST">oportunidad_cita_OPORTUNIDAD_INST</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_OPORTUNIDAD_USU">oportunidad_fecha_citabd_OPORTUNIDAD_USU</option>
+                                
+                                    <option value="oportunidad_cita_OPORTUNIDAD_USU">oportunidad_cita_OPORTUNIDAD_USU</option>
+                                
+                                    <option value="oportunidad_fecha_citabd_Codigo_Producto_CUPS">oportunidad_fecha_citabd_Codigo_Producto_CUPS</option>
+                                
+                                    <option value="oportunidad_cita">oportunidad_cita</option>
+                                
+                                    <option value="variables_Nieto_CIP">variables_Nieto_CIP</option>
+                                
+                                    <option value="variables">variables</option>
+                                
+                                    <option value="oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA">oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA</option>
+                                
+                                    <option value="variables_valida">variables_valida</option>
+                                
+                                    <option value="oportunidad_cita_TIPO_2">oportunidad_cita_TIPO_2</option>
+                                
+                                    <option value="variables_Especialidad_Actividades">variables_Especialidad_Actividades</option>
+                                
+                                    <option value="Condicion_igual_Servicio_Nieto">Condicion_igual_Servicio_Nieto</option>
+                                
+                                    <option value="variables_ESPECIALIDAD_AGRUP">variables_ESPECIALIDAD_AGRUP</option>
+                                
+                                    <option value="oportunidad_cita_Nombre_Especialidad_CIP_AJUST">oportunidad_cita_Nombre_Especialidad_CIP_AJUST</option>
+                                
+                                    <option value="oportunidad_cita_Oportunidad">oportunidad_cita_Oportunidad</option>
+                                
+                                    <option value="oportunidad_cita_Reprogramadas">oportunidad_cita_Reprogramadas</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "aqua", "id": "fecha_citas_Fuente_de_la_Cita", "label": "Fuente_de_la_Cita", "shape": "dot", "size": 3, "title": "Columna 1"}, {"color": "yellow", "id": "fecha_citas", "label": "fecha_citas", "shape": "dot", "size": 30, "title": "Reporte generado de DGH"}, {"color": "aqua", "id": "fecha_citas_Documento_de_la_Cita", "label": "Documento_de_la_Cita", "shape": "dot", "size": 6, "title": "Columna 2"}, {"color": "lime", "id": "Condicion_igual_no_vacio_Documento_de_la_Cita", "label": "Condicion_igual_no_vacio_Documento_de_la_Cita", "shape": "dot", "size": 24, "title": "Documento_de_la_Cita es igual y no vacio entre fecha_citas y oportunidad_cita"}, {"color": "aqua", "id": "fecha_citas_Fecha_de_Grabacion", "label": "Fecha_de_Grabacion", "shape": "dot", "size": 6, "title": "Columna 3"}, {"color": "lime", "id": "Condicion_vacia_Fecha_de_Grabacion", "label": "Condicion_vacia_Fecha_de_Grabacion", "shape": "dot", "size": 30, "title": "Fecha_de_Grabacion es vacia en fecha_citas  para las columnas de fecha_citas que se copien a oportunidad_cita"}, {"color": "aqua", "id": "fecha_citas_Carnet", "label": "Carnet", "shape": "dot", "size": 3, "title": "Columna 4"}, {"color": "aqua", "id": "fecha_citas_Identificacion_del_Responsable", "label": "Identificacion_del_Responsable", "shape": "dot", "size": 3, "title": "Columna 5"}, {"color": "aqua", "id": "fecha_citas_Nombre_Responsable", "label": "Nombre_Responsable", "shape": "dot", "size": 3, "title": "Columna 6"}, {"color": "aqua", "id": "fecha_citas_Concepto_Facturacion", "label": "Concepto_Facturacion", "shape": "dot", "size": 3, "title": "Columna 7"}, {"color": "aqua", "id": "fecha_citas_Codigo_Producto_CUPS", "label": "Codigo_Producto_CUPS", "shape": "dot", "size": 6, "title": "Columna 8"}, {"color": "aqua", "id": "oportunidad_cita_Codigo_Producto_CUPS", "label": "Codigo_Producto_CUPS", "shape": "dot", "size": 12, "title": "Columna 35"}, {"color": "aqua", "id": "fecha_citas_Especialidad", "label": "Especialidad", "shape": "dot", "size": 6, "title": "Columna 9"}, {"color": "aqua", "id": "oportunidad_cita_Especialidad", "label": "Especialidad", "shape": "dot", "size": 12, "title": "Columna 5"}, {"color": "aqua", "id": "fecha_citas_Nombre_Especialidad", "label": "Nombre_Especialidad", "shape": "dot", "size": 6, "title": "Columna 10"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Especialidad", "label": "Nombre_Especialidad", "shape": "dot", "size": 12, "title": "Columna 6"}, {"color": "aqua", "id": "fecha_citas_Fecha_Cita", "label": "Fecha_Cita", "shape": "dot", "size": 3, "title": "Columna 11"}, {"color": "aqua", "id": "fecha_citas_Hora_Cita", "label": "Hora_Cita", "shape": "dot", "size": 3, "title": "Columna 12"}, {"color": "aqua", "id": "fecha_citas_TIPO_CITA", "label": "TIPO_CITA", "shape": "dot", "size": 3, "title": "Columna 13"}, {"color": "aqua", "id": "fecha_citas_Fecha_Preferencia_Paciente", "label": "Fecha_Preferencia_Paciente", "shape": "dot", "size": 3, "title": "Columna 14"}, {"color": "aqua", "id": "fecha_citas_Estructura_Administrativa", "label": "Estructura_Administrativa", "shape": "dot", "size": 6, "title": "Columna 15"}, {"color": "aqua", "id": "oportunidad_cita_Estructura_Administrativa", "label": "Estructura_Administrativa", "shape": "dot", "size": 12, "title": "Columna 11"}, {"color": "aqua", "id": "fecha_citas_Sede", "label": "Sede", "shape": "dot", "size": 6, "title": "Columna 16"}, {"color": "aqua", "id": "oportunidad_cita_Sede", "label": "Sede", "shape": "dot", "size": 12, "title": "Columna 12"}, {"color": "aqua", "id": "fecha_citas_Medico", "label": "Medico", "shape": "dot", "size": 6, "title": "Columna 17"}, {"color": "aqua", "id": "oportunidad_cita_Medico", "label": "Medico", "shape": "dot", "size": 12, "title": "Columna 13"}, {"color": "aqua", "id": "fecha_citas_Nombre_Medico", "label": "Nombre_Medico", "shape": "dot", "size": 6, "title": "Columna 18"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Medico", "label": "Nombre_Medico", "shape": "dot", "size": 12, "title": "Columna 14"}, {"color": "aqua", "id": "fecha_citas_Estado_Cita", "label": "Estado_Cita", "shape": "dot", "size": 3, "title": "Columna 19"}, {"color": "aqua", "id": "fecha_citas_Duracion_Cita", "label": "Duracion_Cita", "shape": "dot", "size": 6, "title": "Columna 20"}, {"color": "aqua", "id": "oportunidad_cita_Duracion_Cita", "label": "Duracion_Cita", "shape": "dot", "size": 12, "title": "Columna 16, en minutos totales"}, {"color": "aqua", "id": "fecha_citas_Usuario", "label": "Usuario", "shape": "dot", "size": 3, "title": "Columna 21"}, {"color": "aqua", "id": "fecha_citas_Nombre_usuario", "label": "Nombre_usuario", "shape": "dot", "size": 3, "title": "Columna 22"}, {"color": "aqua", "id": "fecha_citas_Primer_Apellido_usuario", "label": "Primer_Apellido_usuario", "shape": "dot", "size": 3, "title": "Columna 23"}, {"color": "aqua", "id": "fecha_citas_Segundo_Apellido_usuario", "label": "Segundo_Apellido_usuario", "shape": "dot", "size": 3, "title": "Columna 24"}, {"color": "aqua", "id": "fecha_citas_Numero_Ingreso", "label": "Numero_Ingreso", "shape": "dot", "size": 3, "title": "Columna 25"}, {"color": "aqua", "id": "fecha_citas_Primer_Apellido_Paciente", "label": "Primer_Apellido_Paciente", "shape": "dot", "size": 3, "title": "Columna 26"}, {"color": "aqua", "id": "fecha_citas_Segundo_Apellido_Paciente", "label": "Segundo_Apellido_Paciente", "shape": "dot", "size": 3, "title": "Columna 27"}, {"color": "aqua", "id": "fecha_citas_Nombre_Paciente", "label": "Nombre_Paciente", "shape": "dot", "size": 3, "title": "Columna 28"}, {"color": "aqua", "id": "fecha_citas_Fecha_Nacimiento", "label": "Fecha_Nacimiento", "shape": "dot", "size": 3, "title": "Columna 29"}, {"color": "aqua", "id": "fecha_citas_Identificacion", "label": "Identificacion", "shape": "dot", "size": 3, "title": "Columna 30"}, {"color": "aqua", "id": "fecha_citas_Tipo_Doc", "label": "Tipo_Doc", "shape": "dot", "size": 3, "title": "Columna 31"}, {"color": "aqua", "id": "fecha_citas_Nacionalidad", "label": "Nacionalidad", "shape": "dot", "size": 6, "title": "Columna 32"}, {"color": "aqua", "id": "oportunidad_cita_Nacionalidad", "label": "Nacionalidad", "shape": "dot", "size": 9, "title": "Columna 37"}, {"color": "aqua", "id": "fecha_citas_Telefono", "label": "Telefono", "shape": "dot", "size": 3, "title": "Columna 33"}, {"color": "aqua", "id": "fecha_citas_Sexo_Paciente", "label": "Sexo_Paciente", "shape": "dot", "size": 3, "title": "Columna 34"}, {"color": "aqua", "id": "fecha_citas_Barrio", "label": "Barrio", "shape": "dot", "size": 6, "title": "Columna 35"}, {"color": "aqua", "id": "oportunidad_cita_Barrio", "label": "Barrio", "shape": "dot", "size": 9, "title": "Columna 38"}, {"color": "aqua", "id": "fecha_citas_Nombre_Barrio", "label": "Nombre_Barrio", "shape": "dot", "size": 6, "title": "Columna 36"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Barrio", "label": "Nombre_Barrio", "shape": "dot", "size": 9, "title": "Columna 39"}, {"color": "aqua", "id": "fecha_citas_Localidad", "label": "Localidad", "shape": "dot", "size": 6, "title": "Columna 37"}, {"color": "aqua", "id": "oportunidad_cita_Localidad", "label": "Localidad", "shape": "dot", "size": 9, "title": "Columna 40"}, {"color": "aqua", "id": "fecha_citas_Nombre_Localidad", "label": "Nombre_Localidad", "shape": "dot", "size": 6, "title": "Columna 38"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Localidad", "label": "Nombre_Localidad", "shape": "dot", "size": 9, "title": "Columna 41"}, {"color": "aqua", "id": "fecha_citas_Servicio_Nieto", "label": "Servicio_Nieto", "shape": "dot", "size": 6, "title": "Columna 39"}, {"color": "aqua", "id": "oportunidad_cita_Servicio_Nieto", "label": "Servicio_Nieto", "shape": "dot", "size": 15, "title": "Columna 29, en minusculas"}, {"color": "aqua", "id": "fecha_citas_Regimen", "label": "Regimen", "shape": "dot", "size": 3, "title": "Columna 40"}, {"color": "aqua", "id": "fecha_citas_Grupo_Usuario", "label": "Grupo_Usuario", "shape": "dot", "size": 3, "title": "Columna 41"}, {"color": "aqua", "id": "fecha_citas_Tipo_Asignacion", "label": "Tipo_Asignacion", "shape": "dot", "size": 6, "title": "Columna 42"}, {"color": "aqua", "id": "oportunidad_cita_Tipo_Asignacion", "label": "Tipo_Asignacion", "shape": "dot", "size": 9, "title": "Columna 36"}, {"color": "aqua", "id": "fecha_citas_CIE10_DIAGNOSTICO", "label": "CIE10_DIAGNOSTICO", "shape": "dot", "size": 3, "title": "Columna 43"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Documento_de_la_Cita", "label": "Documento_de_la_Cita", "shape": "dot", "size": 6, "title": "Columna 1"}, {"color": "yellow", "id": "oportunidad_fecha_citabd", "label": "oportunidad_fecha_citabd", "shape": "dot", "size": 30, "title": "Reporte generado de DGH"}, {"color": "aqua", "id": "oportunidad_cita_Documento_de_la_Cita", "label": "Documento_de_la_Cita", "shape": "dot", "size": 9, "title": "Columna 1"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Fecha_de_Grabacion", "label": "Fecha_de_Grabacion", "shape": "dot", "size": 6, "title": "Columna 2"}, {"color": "aqua", "id": "oportunidad_cita_Fecha_de_Grabacion", "label": "Fecha_de_Grabacion", "shape": "dot", "size": 6, "title": "Columna 2"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Identificacion_del_Responsable", "label": "Identificacion_del_Responsable", "shape": "dot", "size": 6, "title": "Columna 3"}, {"color": "aqua", "id": "oportunidad_cita_Identificacion_del_Responsable", "label": "Identificacion_del_Responsable", "shape": "dot", "size": 6, "title": "Columna 3"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Nombre_Responsable", "label": "Nombre_Responsable", "shape": "dot", "size": 6, "title": "Columna 4"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Responsable", "label": "Nombre_Responsable", "shape": "dot", "size": 6, "title": "Columna 4"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Especialidad", "label": "Especialidad", "shape": "dot", "size": 6, "title": "Columna 5"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Nombre_Especialidad", "label": "Nombre_Especialidad", "shape": "dot", "size": 6, "title": "Columna 6"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Fecha_Cita", "label": "Fecha_Cita", "shape": "dot", "size": 6, "title": "Columna 7"}, {"color": "aqua", "id": "oportunidad_cita_Fecha_Cita", "label": "Fecha_Cita", "shape": "dot", "size": 6, "title": "Columna 7"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Hora_Cita", "label": "Hora_Cita", "shape": "dot", "size": 6, "title": "Columna 8"}, {"color": "aqua", "id": "oportunidad_cita_Hora_Cita", "label": "Hora_Cita", "shape": "dot", "size": 6, "title": "Columna 8"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_TIPO_CITA", "label": "TIPO_CITA", "shape": "dot", "size": 6, "title": "Columna 9"}, {"color": "aqua", "id": "oportunidad_cita_TIPO_CITA", "label": "TIPO_CITA", "shape": "dot", "size": 6, "title": "Columna 9"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Fecha_Preferencia_Paciente", "label": "Fecha_Preferencia_Paciente", "shape": "dot", "size": 6, "title": "Columna 10"}, {"color": "aqua", "id": "oportunidad_cita_Fecha_Preferencia_Paciente", "label": "Fecha_Preferencia_Paciente", "shape": "dot", "size": 6, "title": "Columna 10"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Estructura_Administrativa", "label": "Estructura_Administrativa", "shape": "dot", "size": 6, "title": "Columna 11"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Sede", "label": "Sede", "shape": "dot", "size": 6, "title": "Columna 12"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Medico", "label": "Medico", "shape": "dot", "size": 6, "title": "Columna 13"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Nombre_Medico", "label": "Nombre_Medico", "shape": "dot", "size": 6, "title": "Columna 14"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Estado_Cita", "label": "Estado_Cita", "shape": "dot", "size": 6, "title": "Columna 15"}, {"color": "aqua", "id": "oportunidad_cita_Estado_Cita", "label": "Estado_Cita", "shape": "dot", "size": 6, "title": "Columna 15"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Duracion_Cita", "label": "Duracion_Cita", "shape": "dot", "size": 6, "title": "Columna 16"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Usuario", "label": "Usuario", "shape": "dot", "size": 6, "title": "Columna 17"}, {"color": "aqua", "id": "oportunidad_cita_Usuario", "label": "Usuario", "shape": "dot", "size": 6, "title": "Columna 17"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Grupo_Usuario", "label": "Grupo_Usuario", "shape": "dot", "size": 6, "title": "Columna 18"}, {"color": "aqua", "id": "oportunidad_cita_Grupo_Usuario", "label": "Grupo_Usuario", "shape": "dot", "size": 6, "title": "Columna 18"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Ingreso", "label": "Ingreso", "shape": "dot", "size": 6, "title": "Columna 19"}, {"color": "aqua", "id": "oportunidad_cita_Ingreso", "label": "Ingreso", "shape": "dot", "size": 6, "title": "Columna 19"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Primer_Apellido_Paciente", "label": "Primer_Apellido_Paciente", "shape": "dot", "size": 6, "title": "Columna 20"}, {"color": "aqua", "id": "oportunidad_cita_Primer_Apellido_Paciente", "label": "Primer_Apellido_Paciente", "shape": "dot", "size": 6, "title": "Columna 20"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Segundo_Apellido_Paciente", "label": "Segundo_Apellido_Paciente", "shape": "dot", "size": 6, "title": "Columna 21"}, {"color": "aqua", "id": "oportunidad_cita_Segundo_Apellido_Paciente", "label": "Segundo_Apellido_Paciente", "shape": "dot", "size": 6, "title": "Columna 21"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Nombre_Paciente", "label": "Nombre_Paciente", "shape": "dot", "size": 6, "title": "Columna 22"}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Paciente", "label": "Nombre_Paciente", "shape": "dot", "size": 6, "title": "Columna 22"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Fecha_Nacimiento", "label": "Fecha_Nacimiento", "shape": "dot", "size": 6, "title": "Columna 23"}, {"color": "aqua", "id": "oportunidad_cita_Fecha_Nacimiento", "label": "Fecha_Nacimiento", "shape": "dot", "size": 6, "title": "Columna 23"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_EDAD", "label": "EDAD", "shape": "dot", "size": 6, "title": "Columna 24"}, {"color": "aqua", "id": "oportunidad_cita_EDAD", "label": "EDAD", "shape": "dot", "size": 6, "title": "Columna 24"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Identificacion", "label": "Identificacion", "shape": "dot", "size": 6, "title": "Columna 25"}, {"color": "aqua", "id": "oportunidad_cita_Identificacion", "label": "Identificacion", "shape": "dot", "size": 6, "title": "Columna 25"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Tipo_Doc", "label": "Tipo_Doc", "shape": "dot", "size": 6, "title": "Columna 26"}, {"color": "aqua", "id": "oportunidad_cita_Tipo_Doc", "label": "Tipo_Doc", "shape": "dot", "size": 6, "title": "Columna 26"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Telefono", "label": "Telefono", "shape": "dot", "size": 6, "title": "Columna 27"}, {"color": "aqua", "id": "oportunidad_cita_Telefono", "label": "Telefono", "shape": "dot", "size": 6, "title": "Columna 27"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Sexo_Paciente", "label": "Sexo_Paciente", "shape": "dot", "size": 6, "title": "Columna 28"}, {"color": "aqua", "id": "oportunidad_cita_Sexo_Paciente", "label": "Sexo_Paciente", "shape": "dot", "size": 6, "title": "Columna 28"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Servicio_Nieto", "label": "Servicio_Nieto", "shape": "dot", "size": 6, "title": "Columna 29"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Especialidad2", "label": "Especialidad2", "shape": "dot", "size": 6, "title": "Columna 30"}, {"color": "aqua", "id": "oportunidad_cita_Especialidad2", "label": "Especialidad2", "shape": "dot", "size": 6, "title": "Columna 30"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Tipo_Valida", "label": "Tipo_Valida", "shape": "dot", "size": 6, "title": "Columna 31"}, {"color": "aqua", "id": "oportunidad_cita_Tipo_Valida", "label": "Tipo_Valida", "shape": "dot", "size": 6, "title": "Columna 31"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Vinculacion", "label": "Vinculacion", "shape": "dot", "size": 6, "title": "Columna 32"}, {"color": "aqua", "id": "oportunidad_cita_Vinculacion", "label": "Vinculacion", "shape": "dot", "size": 6, "title": "Columna 32"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_OPORTUNIDAD_INST", "label": "OPORTUNIDAD_INST", "shape": "dot", "size": 6, "title": "Columna 33"}, {"color": "aqua", "id": "oportunidad_cita_OPORTUNIDAD_INST", "label": "OPORTUNIDAD_INST", "shape": "dot", "size": 6, "title": "Columna 33"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_OPORTUNIDAD_USU", "label": "OPORTUNIDAD_USU", "shape": "dot", "size": 6, "title": "Columna 34"}, {"color": "aqua", "id": "oportunidad_cita_OPORTUNIDAD_USU", "label": "OPORTUNIDAD_USU", "shape": "dot", "size": 6, "title": "Columna 34"}, {"color": "aqua", "id": "oportunidad_fecha_citabd_Codigo_Producto_CUPS", "label": "Codigo_Producto_CUPS", "shape": "dot", "size": 6, "title": "Columna 35"}, {"color": "yellow", "id": "oportunidad_cita", "label": "oportunidad_cita", "shape": "dot", "size": 30, "title": "Reporte generado de DGH"}, {"color": "aqua", "id": "variables_Nieto_CIP", "label": "Nieto_CIP", "shape": "dot", "size": 6, "title": ""}, {"color": "yellow", "id": "variables", "label": "variables", "shape": "dot", "size": 12, "title": ""}, {"color": "aqua", "id": "oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA", "label": "nieto_CIP_AJUST_FECHA_CITA", "shape": "dot", "size": 9, "title": "Columna 43"}, {"color": "aqua", "id": "variables_valida", "label": "valida", "shape": "dot", "size": 6, "title": ""}, {"color": "aqua", "id": "oportunidad_cita_TIPO_2", "label": "TIPO_2", "shape": "dot", "size": 9, "title": "Columna 44"}, {"color": "aqua", "id": "variables_Especialidad_Actividades", "label": "Especialidad_Actividades", "shape": "dot", "size": 6, "title": ""}, {"color": "lime", "id": "Condicion_igual_Servicio_Nieto", "label": "Condicion_igual_Servicio_Nieto", "shape": "dot", "size": 15, "title": "Servicio_Nieto es igual a Especialidad_Actividades entre oportunidad_cita y variables"}, {"color": "aqua", "id": "variables_ESPECIALIDAD_AGRUP", "label": "ESPECIALIDAD_AGRUP", "shape": "dot", "size": 6, "title": ""}, {"color": "aqua", "id": "oportunidad_cita_Nombre_Especialidad_CIP_AJUST", "label": "Nombre_Especialidad_CIP_AJUST", "shape": "dot", "size": 9, "title": "Columna 42"}, {"color": "aqua", "id": "oportunidad_cita_Oportunidad", "label": "Oportunidad", "shape": "dot", "size": 3, "title": "Columna 45"}, {"color": "aqua", "id": "oportunidad_cita_Reprogramadas", "label": "Reprogramadas", "shape": "dot", "size": 3, "title": "Columna 46"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "fecha_citas_Fuente_de_la_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Documento_de_la_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Documento_de_la_Cita", "title": "CUMPLE", "to": "Condicion_igual_no_vacio_Documento_de_la_Cita"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Tipo_Asignacion"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Nacionalidad"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Barrio"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Nombre_Barrio"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Localidad"}, {"arrows": "to", "from": "Condicion_igual_no_vacio_Documento_de_la_Cita", "title": "CUMPLE", "to": "oportunidad_cita_Nombre_Localidad"}, {"arrows": "to", "from": "fecha_citas_Fecha_de_Grabacion", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Fecha_de_Grabacion", "title": "CUMPLE", "to": "Condicion_vacia_Fecha_de_Grabacion"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Especialidad"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Nombre_Especialidad"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Estructura_Administrativa"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Sede"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Medico"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Nombre_Medico"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Duracion_Cita"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Servicio_Nieto"}, {"arrows": "to", "from": "Condicion_vacia_Fecha_de_Grabacion", "title": "CUMPLE", "to": "oportunidad_cita_Codigo_Producto_CUPS"}, {"arrows": "to", "from": "fecha_citas_Carnet", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Identificacion_del_Responsable", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Responsable", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Concepto_Facturacion", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Codigo_Producto_CUPS", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Codigo_Producto_CUPS", "title": "COPIADO_A", "to": "oportunidad_cita_Codigo_Producto_CUPS"}, {"arrows": "to", "from": "oportunidad_cita_Codigo_Producto_CUPS", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Especialidad", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Especialidad", "title": "COPIADO_A", "to": "oportunidad_cita_Especialidad"}, {"arrows": "to", "from": "oportunidad_cita_Especialidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Nombre_Especialidad", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Especialidad", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Especialidad"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Especialidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Fecha_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Hora_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_TIPO_CITA", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Fecha_Preferencia_Paciente", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Estructura_Administrativa", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Estructura_Administrativa", "title": "COPIADO_A", "to": "oportunidad_cita_Estructura_Administrativa"}, {"arrows": "to", "from": "oportunidad_cita_Estructura_Administrativa", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Sede", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Sede", "title": "COPIADO_A", "to": "oportunidad_cita_Sede"}, {"arrows": "to", "from": "oportunidad_cita_Sede", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Medico", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Medico", "title": "COPIADO_A", "to": "oportunidad_cita_Medico"}, {"arrows": "to", "from": "oportunidad_cita_Medico", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Nombre_Medico", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Medico", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Medico"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Medico", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Estado_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Duracion_Cita", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Duracion_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Duracion_Cita"}, {"arrows": "to", "from": "oportunidad_cita_Duracion_Cita", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Usuario", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_usuario", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Primer_Apellido_usuario", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Segundo_Apellido_usuario", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Numero_Ingreso", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Primer_Apellido_Paciente", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Segundo_Apellido_Paciente", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Paciente", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Fecha_Nacimiento", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Identificacion", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Tipo_Doc", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nacionalidad", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nacionalidad", "title": "COPIADO_A", "to": "oportunidad_cita_Nacionalidad"}, {"arrows": "to", "from": "oportunidad_cita_Nacionalidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Telefono", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Sexo_Paciente", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Barrio", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Barrio", "title": "COPIADO_A", "to": "oportunidad_cita_Barrio"}, {"arrows": "to", "from": "oportunidad_cita_Barrio", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Nombre_Barrio", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Barrio", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Barrio"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Barrio", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Localidad", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Localidad", "title": "COPIADO_A", "to": "oportunidad_cita_Localidad"}, {"arrows": "to", "from": "oportunidad_cita_Localidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Nombre_Localidad", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Nombre_Localidad", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Localidad"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Localidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_Servicio_Nieto", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Servicio_Nieto", "title": "COPIADO_A", "to": "oportunidad_cita_Servicio_Nieto"}, {"arrows": "to", "from": "oportunidad_cita_Servicio_Nieto", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_cita_Servicio_Nieto", "title": "CUMPLE", "to": "Condicion_igual_Servicio_Nieto"}, {"arrows": "to", "from": "fecha_citas_Regimen", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Grupo_Usuario", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Tipo_Asignacion", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "fecha_citas_Tipo_Asignacion", "title": "COPIADO_A", "to": "oportunidad_cita_Tipo_Asignacion"}, {"arrows": "to", "from": "oportunidad_cita_Tipo_Asignacion", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "fecha_citas_CIE10_DIAGNOSTICO", "title": "CAMPO_DE", "to": "fecha_citas"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Documento_de_la_Cita", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Documento_de_la_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Documento_de_la_Cita"}, {"arrows": "to", "from": "oportunidad_cita_Documento_de_la_Cita", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_cita_Documento_de_la_Cita", "title": "CUMPLE", "to": "Condicion_igual_no_vacio_Documento_de_la_Cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_de_Grabacion", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_de_Grabacion", "title": "COPIADO_A", "to": "oportunidad_cita_Fecha_de_Grabacion"}, {"arrows": "to", "from": "oportunidad_cita_Fecha_de_Grabacion", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Identificacion_del_Responsable", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Identificacion_del_Responsable", "title": "COPIADO_A", "to": "oportunidad_cita_Identificacion_del_Responsable"}, {"arrows": "to", "from": "oportunidad_cita_Identificacion_del_Responsable", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Responsable", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Responsable", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Responsable"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Responsable", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Especialidad", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Especialidad", "title": "COPIADO_A", "to": "oportunidad_cita_Especialidad"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Especialidad", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Especialidad", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Especialidad"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Cita", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Fecha_Cita"}, {"arrows": "to", "from": "oportunidad_cita_Fecha_Cita", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Hora_Cita", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Hora_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Hora_Cita"}, {"arrows": "to", "from": "oportunidad_cita_Hora_Cita", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_TIPO_CITA", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_TIPO_CITA", "title": "COPIADO_A", "to": "oportunidad_cita_TIPO_CITA"}, {"arrows": "to", "from": "oportunidad_cita_TIPO_CITA", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Preferencia_Paciente", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Preferencia_Paciente", "title": "COPIADO_A", "to": "oportunidad_cita_Fecha_Preferencia_Paciente"}, {"arrows": "to", "from": "oportunidad_cita_Fecha_Preferencia_Paciente", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Estructura_Administrativa", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Estructura_Administrativa", "title": "COPIADO_A", "to": "oportunidad_cita_Estructura_Administrativa"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Sede", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Sede", "title": "COPIADO_A", "to": "oportunidad_cita_Sede"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Medico", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Medico", "title": "COPIADO_A", "to": "oportunidad_cita_Medico"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Medico", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Medico", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Medico"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Estado_Cita", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Estado_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Estado_Cita"}, {"arrows": "to", "from": "oportunidad_cita_Estado_Cita", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Duracion_Cita", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Duracion_Cita", "title": "COPIADO_A", "to": "oportunidad_cita_Duracion_Cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Usuario", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Usuario", "title": "COPIADO_A", "to": "oportunidad_cita_Usuario"}, {"arrows": "to", "from": "oportunidad_cita_Usuario", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Grupo_Usuario", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Grupo_Usuario", "title": "COPIADO_A", "to": "oportunidad_cita_Grupo_Usuario"}, {"arrows": "to", "from": "oportunidad_cita_Grupo_Usuario", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Ingreso", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Ingreso", "title": "COPIADO_A", "to": "oportunidad_cita_Ingreso"}, {"arrows": "to", "from": "oportunidad_cita_Ingreso", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Primer_Apellido_Paciente", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Primer_Apellido_Paciente", "title": "COPIADO_A", "to": "oportunidad_cita_Primer_Apellido_Paciente"}, {"arrows": "to", "from": "oportunidad_cita_Primer_Apellido_Paciente", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Segundo_Apellido_Paciente", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Segundo_Apellido_Paciente", "title": "COPIADO_A", "to": "oportunidad_cita_Segundo_Apellido_Paciente"}, {"arrows": "to", "from": "oportunidad_cita_Segundo_Apellido_Paciente", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Paciente", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Nombre_Paciente", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Paciente"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Paciente", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Nacimiento", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Fecha_Nacimiento", "title": "COPIADO_A", "to": "oportunidad_cita_Fecha_Nacimiento"}, {"arrows": "to", "from": "oportunidad_cita_Fecha_Nacimiento", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_EDAD", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_EDAD", "title": "COPIADO_A", "to": "oportunidad_cita_EDAD"}, {"arrows": "to", "from": "oportunidad_cita_EDAD", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Identificacion", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Identificacion", "title": "COPIADO_A", "to": "oportunidad_cita_Identificacion"}, {"arrows": "to", "from": "oportunidad_cita_Identificacion", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Tipo_Doc", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Tipo_Doc", "title": "COPIADO_A", "to": "oportunidad_cita_Tipo_Doc"}, {"arrows": "to", "from": "oportunidad_cita_Tipo_Doc", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Telefono", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Telefono", "title": "COPIADO_A", "to": "oportunidad_cita_Telefono"}, {"arrows": "to", "from": "oportunidad_cita_Telefono", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Sexo_Paciente", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Sexo_Paciente", "title": "COPIADO_A", "to": "oportunidad_cita_Sexo_Paciente"}, {"arrows": "to", "from": "oportunidad_cita_Sexo_Paciente", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Servicio_Nieto", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Servicio_Nieto", "title": "COPIADO_A", "to": "oportunidad_cita_Servicio_Nieto"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Especialidad2", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Especialidad2", "title": "COPIADO_A", "to": "oportunidad_cita_Especialidad2"}, {"arrows": "to", "from": "oportunidad_cita_Especialidad2", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Tipo_Valida", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Tipo_Valida", "title": "COPIADO_A", "to": "oportunidad_cita_Tipo_Valida"}, {"arrows": "to", "from": "oportunidad_cita_Tipo_Valida", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Vinculacion", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Vinculacion", "title": "COPIADO_A", "to": "oportunidad_cita_Vinculacion"}, {"arrows": "to", "from": "oportunidad_cita_Vinculacion", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_OPORTUNIDAD_INST", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_OPORTUNIDAD_INST", "title": "COPIADO_A", "to": "oportunidad_cita_OPORTUNIDAD_INST"}, {"arrows": "to", "from": "oportunidad_cita_OPORTUNIDAD_INST", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_OPORTUNIDAD_USU", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_OPORTUNIDAD_USU", "title": "COPIADO_A", "to": "oportunidad_cita_OPORTUNIDAD_USU"}, {"arrows": "to", "from": "oportunidad_cita_OPORTUNIDAD_USU", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Codigo_Producto_CUPS", "title": "CAMPO_DE", "to": "oportunidad_fecha_citabd"}, {"arrows": "to", "from": "oportunidad_fecha_citabd_Codigo_Producto_CUPS", "title": "COPIADO_A", "to": "oportunidad_cita_Codigo_Producto_CUPS"}, {"arrows": "to", "from": "variables_Nieto_CIP", "title": "CAMPO_DE", "to": "variables"}, {"arrows": "to", "from": "variables_Nieto_CIP", "title": "COPIADO_A", "to": "oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA"}, {"arrows": "to", "from": "oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "variables_valida", "title": "CAMPO_DE", "to": "variables"}, {"arrows": "to", "from": "variables_valida", "title": "COPIADO_A", "to": "oportunidad_cita_TIPO_2"}, {"arrows": "to", "from": "oportunidad_cita_TIPO_2", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "variables_Especialidad_Actividades", "title": "CAMPO_DE", "to": "variables"}, {"arrows": "to", "from": "variables_Especialidad_Actividades", "title": "CUMPLE", "to": "Condicion_igual_Servicio_Nieto"}, {"arrows": "to", "from": "Condicion_igual_Servicio_Nieto", "title": "CUMPLE", "to": "oportunidad_cita_Nombre_Especialidad_CIP_AJUST"}, {"arrows": "to", "from": "Condicion_igual_Servicio_Nieto", "title": "CUMPLE", "to": "oportunidad_cita_nieto_CIP_AJUST_FECHA_CITA"}, {"arrows": "to", "from": "Condicion_igual_Servicio_Nieto", "title": "CUMPLE", "to": "oportunidad_cita_TIPO_2"}, {"arrows": "to", "from": "variables_ESPECIALIDAD_AGRUP", "title": "CAMPO_DE", "to": "variables"}, {"arrows": "to", "from": "variables_ESPECIALIDAD_AGRUP", "title": "COPIADO_A", "to": "oportunidad_cita_Nombre_Especialidad_CIP_AJUST"}, {"arrows": "to", "from": "oportunidad_cita_Nombre_Especialidad_CIP_AJUST", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_cita_Oportunidad", "title": "CAMPO_DE", "to": "oportunidad_cita"}, {"arrows": "to", "from": "oportunidad_cita_Reprogramadas", "title": "CAMPO_DE", "to": "oportunidad_cita"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "font": {"size": 12}}, "edges": {"arrows": {"to": {"enabled": true}}, "font": {"size": 10, "align": "middle"}}, "interaction": {"hover": true, "zoomView": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

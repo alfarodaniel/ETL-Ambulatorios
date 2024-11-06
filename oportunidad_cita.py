@@ -136,7 +136,7 @@ dfOportunidad_cita['Reprogramadas'] = np.where(
         # Segunda condición: Si 'Estado Cita' es 'Cancelada'
         dfOportunidad_cita['Estado Cita'] == 'Cancelada',
 
-        # Si si se cumple la segunda condición se entra en una Tercera condición: Si 'Estado Cita' fila anterior es 'Cancelada'
+        # Si sí se cumple la segunda condición se entra en una Tercera condición: Si 'Estado Cita' fila anterior es 'Cancelada'
         np.where(dfOportunidad_cita['Estado Cita'].shift(1) == 'Cancelada', 'Reprogramada', 'No Reprogramada'),
 
         # Si no se cumple la segunda condición se entra en una Cuarta condición: Si 'Estado Cita' fila anterior es 'Cancelada'
@@ -152,42 +152,42 @@ dfOportunidad_cita['Reprogramadas'] = np.where(
 # Filtrar dfOportunidad_cita por 'Estado Cita' igual a 'Atendida' creando dfOportunidad_cita_Atendida
 dfOportunidad_cita_Atendida = dfOportunidad_cita[dfOportunidad_cita['Estado Cita'] == 'Atendida']
 
-# Crear la tabla pivote Asignadas
+# Crear la tabla pivote Asignadas, crea columna 'Asignadas'
 pivote_Asignadas = dfOportunidad_cita.groupby(['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA']).size().reset_index(name='Asignadas')
 
 # Pivote Estado
 
-# Crear la tabla pivote Estados
+# Crear la tabla pivote Estados, crea columnas 'Atendida_x', 'Cancelada_x', 'Incumplida_x'
 pivote_Estados = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Reprogramadas
 
-# Crear la tabla pivote Estados
+# Crear la tabla pivote Estados, crea columnas 'Atendida_y', 'Cancelada_y', 'Incumplida_y', 'No Reprogramada', 'Reprogramada'
 pivote_Reprogramadas = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Tipo
 
-# Crear la tabla pivote Atendida Tipo
+# Crear la tabla pivote Atendida Tipo, crea columnas 'Control_x', 'Primer Vez_x', 'Remision_x'
 pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Vinculacion
 
-# Crear la tabla pivote Atendida Vinculacion
+# Crear la tabla pivote Atendida Vinculacion, crea columnas 'Contributivo', 'Otro', 'Subsidiado', 'Vinculado'
 pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Tipo
 
-# Crear la tabla pivote Tipo
+# Crear la tabla pivote Tipo, crea columnas 'Control_y', 'Primer Vez_y', 'Remision_y'
 pivote_Tipo = dfOportunidad_cita.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Tipo Oportunidad
 
-# Crear la tabla pivote Tipo Oportunidad
+# Crear la tabla pivote Tipo Oportunidad, crea columnas 'Control', 'Primer Vez', 'Remision'
 pivote_TipoOportunidad = dfOportunidad_cita.pivot_table(values='Oportunidad', index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
 
 # Pivote Tipo Asignacion
 
-# Crear la tabla pivote Tipo Asignacion
+# Crear la tabla pivote Tipo Asignacion, crea columnas 'Extra', 'Normal'
 pivote_TipoAsignacion = dfOportunidad_cita_Atendida.pivot_table(index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
 
 # Combinar pivotes en dfConsulta_externa
@@ -211,7 +211,7 @@ dfConsulta_pivote['horas_inf'] = dfConsulta_pivote['Asignadas'] / 3
 dfConsulta_pivote['oportunidad_primera_vez'] = np.where(dfConsulta_pivote['Primer Vez_y'] != 0, dfConsulta_pivote['Primer Vez'] / dfConsulta_pivote['Primer Vez_y'], 0)
 
 # Crear 'oportunidad_control' dividiendo 'Primer Vez_y' por 'Primer Vez' y manejando errores con np.where
-dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
+#dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
 
 # Crear 'val1' con valor 'Ok' si 'Primer Vez_y' + 'Control_y' = 'Asignadas', de lo contrario 'Error'
 dfConsulta_pivote['val1'] = np.where(dfConsulta_pivote['Primer Vez_y'] + dfConsulta_pivote['Control_y'] ==

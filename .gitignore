@@ -1,4 +1,4 @@
 *.xlsx
 *.exe
 *.csv
-grafo_sendas.py
+grafo_ambulatorios.py

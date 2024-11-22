@@ -67,11 +67,19 @@ def descargaExcel(url):
 print('- Cargando Variables')
 dfVariables = descargaExcel("https://subredeintenorte-my.sharepoint.com/:x:/g/personal/gestiondelainformacion_subrednorte_gov_co/EXm0_LeeWK9HlP755iqoY30BW6AWaQilIXmtzlZZDMxQlQ?e=r3Pf02")
 
-print('- Cargando fecha_cita.xlsx')
-dfFecha = con.query("SELECT * FROM st_read('fecha_cita.xlsx')").df()
+if os.path.exists('fecha_cita.csv'):
+    print('- Cargando fecha_cita.csv')
+    dfFecha = con.query("SELECT * FROM st_read('fecha_cita.csv')").df()
+else:
+    print('- Cargando fecha_cita.xlsx')
+    dfFecha = con.query("SELECT * FROM st_read('fecha_cita.xlsx')").df()
 
-print('- Cargando oportunidad_fecha_citaBD.xlsx')
-dfOportunidad = con.query("SELECT * FROM st_read('oportunidad_fecha_citaBD.xlsx')").df()
+if os.path.exists('oportunidad_fecha_citaBD.csv'):
+    print('- Cargando oportunidad_fecha_citaBD.csv')
+    dfOportunidad = con.query("SELECT * FROM st_read('oportunidad_fecha_citaBD.csv')").df()
+else:
+    print('- Cargando oportunidad_fecha_citaBD.xlsx')
+    dfOportunidad = con.query("SELECT * FROM st_read('oportunidad_fecha_citaBD.xlsx')").df()
 
 # %% Procesar datos
 print('Procesando datos...')

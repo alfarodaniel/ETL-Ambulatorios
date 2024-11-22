@@ -1,0 +1,141 @@
+{
+  "name": "Procedimiento SQL a CSV",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Guardar el resultado a XLSX",
+        "height": 242,
+        "width": 399
+      },
+      "id": "c68286a5-2db4-4fab-a71d-61ee8b833c8c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        680
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [{{ $('Execute Workflow Trigger').item.json.procedureName }}] '{{ $('Execute Workflow Trigger').item.json.startDate }}','{{ $('Execute Workflow Trigger').item.json.endDate }}'"
+      },
+      "id": "7fda03d5-dd08-4656-831e-cd0f97ed7e8b",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        740
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "tUO07Zt41ngWAmcG",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "758244d5-0c13-4ded-bb3e-e1358d598ed2",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.fileName }}",
+        "options": {}
+      },
+      "id": "5e0661c8-bc5b-4db8-a732-e876f6ce8a8c",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        820,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Ejecutar el procedimiento",
+        "height": 242,
+        "width": 341
+      },
+      "id": "38d93a8b-404b-4aa2-b192-db69e8e28deb",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        680
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3001d771-50af-4b47-90c1-f356b368c2d9",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        740
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "94ab3e4e-1d95-4b9d-8926-3284c377517f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8e1646d911d660138c8d1fe46f01587a75ef86aac5f97b836299575a4fe88673"
+  },
+  "id": "eszNpykhv0ITQVfL",
+  "tags": []
+}

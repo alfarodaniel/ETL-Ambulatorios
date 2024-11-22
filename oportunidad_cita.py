@@ -254,7 +254,7 @@ dfConsulta_pivote['oportunidad_primera_vez'] = np.where(
     dfConsulta_pivote['Primer Vez_y'] != 0, dfConsulta_pivote['Primer Vez'] / dfConsulta_pivote['Primer Vez_y'], 0)
 
 # Crear 'oportunidad_control' dividiendo 'Primer Vez_y' por 'Primer Vez' y manejando errores con np.where
-#dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
+dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
 
 # Crear 'val1' con valor 'Ok' si 'Primer Vez_y' + 'Control_y' = 'Asignadas', de lo contrario 'Error'
 dfConsulta_pivote['val1'] = np.where(
@@ -272,7 +272,7 @@ dfConsulta_pivote = dfConsulta_pivote[[
     'Asignadas', 'Reprogramada', 'Cancelada_x', 'Incumplida_x', 'Primer Vez_x',
     'Control_x', 'Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
     'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',
-    'Control','val1', 'val2']]
+    'Control', 'oportunidad_control', 'val1', 'val2']]
 
 # Cambiar los nombres de las columnas
 dfConsulta_pivote.columns = [
@@ -280,7 +280,7 @@ dfConsulta_pivote.columns = [
     'Asignadas','Reprogramada', 'Cancelada', 'Inasistencia', 'Primer_Vez',
     'Control','Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
     'horas_inf', 'asig_primer_vez', 'dias_primer_vez', 'oportunidad_primera_vez', 'asig_control',
-    'dias_control','val1', 'val2']
+    'dias_control', 'oportunidad_control', 'val1', 'val2']
 
 # %% Descargar los archivos
 

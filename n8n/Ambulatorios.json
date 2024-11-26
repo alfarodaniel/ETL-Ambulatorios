@@ -6,18 +6,18 @@
         "rule": {
           "interval": [
             {
-              "field": "months"
+              "triggerAtHour": 1
             }
           ]
         }
       },
-      "id": "3f212fb6-dec7-4916-841c-b489d06f4db4",
+      "id": "cce15dad-bb7b-4ad7-a32e-2847dab7c625",
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        420,
-        520
+        380,
+        540
       ]
     },
     {
@@ -26,15 +26,7 @@
           "string": [
             {
               "name": "folderName",
-              "value": "C:/Mis Documentos/trabajos/cientifica/Cuadro de control ambulatorios/ETL-Ambulatorios/"
-            },
-            {
-              "name": "startDate",
-              "value": "={{ $('Date').item.json.Date }}"
-            },
-            {
-              "name": "endDate",
-              "value": "={{ $('Date').item.json.Date }}"
+              "value": "C:/gestion/Cuadros de control/Ambulatorios/"
             },
             {
               "name": "commandName",
@@ -43,240 +35,77 @@
             {
               "name": "resultName",
               "value": "Oportunidad_cita"
+            },
+            {
+              "name": "folderID",
+              "value": "014SRZLAO4FM74IRXBHFB37BR4Q4M4B46I"
             }
           ]
         },
         "options": {}
       },
-      "id": "89f8567a-c956-474c-9a72-9607b16414e8",
+      "id": "445ba7b4-56d2-4e02-9781-161ad664d86b",
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        1420,
-        520
+        760,
+        540
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "id": "ffb222bc-e1fd-4ed2-b1c0-39a3cb0afa74",
-      "name": "Today",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        620,
-        520
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "subtractFromDate",
-        "magnitude": "={{ $json.currentDate }}",
-        "duration": 1,
-        "options": {}
-      },
-      "id": "d5813701-b748-4ef9-812a-62f8e4cf3283",
-      "name": "Yesterday",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        820,
-        520
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json.newDate }}",
-        "format": "=yyyyMMdd",
-        "outputFieldName": "Date",
-        "options": {}
-      },
-      "id": "7ab48351-503f-4627-8127-c15f528093f2",
-      "name": "Date",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        1020,
-        520
-      ]
-    },
-    {
-      "parameters": {
         "content": "## Variables",
         "height": 201,
-        "width": 939
+        "width": 319.5405405405405
       },
-      "id": "0f51034d-0de3-488a-b35f-666ade9f8a0b",
+      "id": "0866c0cd-16f9-414f-a96c-1bc6e60d9328",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        600,
-        460
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"OPORTUNIDAD_CONSULTA_BD\", \n              fileName: \"oportunidad_fecha_citaBD.csv\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 0} },\n    { json: { procedureName: \"OPORTUNIDAD FECHA CITA\",\n              fileName: \"fecha_cita.csv\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 0} }\n];"
+      },
+      "id": "c99edd74-2eb8-40e9-9f3c-a5bab9379307",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
       ]
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "eszNpykhv0ITQVfL",
+          "value": "RF1SwhUOyNOyWOAW",
           "mode": "list",
-          "cachedResultName": "Procedimiento SQL a CSV"
+          "cachedResultName": "Procedimiento ETL"
         },
-        "mode": "each",
         "options": {
           "waitForSubWorkflow": true
         }
       },
-      "id": "4c75fc4e-5af2-4d7e-bf2d-f479148e1e1e",
-      "name": "Execute Workflow Download",
+      "id": "f829d0f8-1b57-4260-bd07-9bf33427e342",
+      "name": "Execute Workflow ETL",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.1,
       "position": [
-        620,
-        720
-      ]
-    },
-    {
-      "parameters": {
-        "command": "=cd {{ $('Names').item.json.folderName }} && {{ $('Names').item.json.commandName }}"
-      },
-      "id": "59e9972c-2b9d-4d40-aa04-754410be5f2b",
-      "name": "Execute Command oportunidad_cita",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        820,
-        720
-      ]
-    },
-    {
-      "parameters": {
-        "fileSelector": "={{ $('Names').item.json.folderName }}{{ $('Names').item.json.resultName }}.xlsx",
-        "options": {
-          "fileExtension": ".xlsx",
-          "fileName": "={{ $('Names').item.json.resultName }}_{{ $('Names').item.json.startDate }}_{{ $('Names').item.json.endDate }}.xlsx",
-          "dataPropertyName": "data"
-        }
-      },
-      "id": "54f858ee-e246-4987-b6f0-4f62107b9ca5",
-      "name": "Read/Write Files from Disk",
-      "type": "n8n-nodes-base.readWriteFile",
-      "typeVersion": 1,
-      "position": [
-        1020,
-        720
-      ],
-      "executeOnce": true,
-      "alwaysOutputData": false,
-      "notesInFlow": false
-    },
-    {
-      "parameters": {
-        "parentId": "014SRZLAO4FM74IRXBHFB37BR4Q4M4B46I",
-        "binaryData": true
-      },
-      "id": "032a6a9c-9701-43b6-af37-fe5fa5096161",
-      "name": "Microsoft OneDrive",
-      "type": "n8n-nodes-base.microsoftOneDrive",
-      "typeVersion": 1,
-      "position": [
-        1220,
-        720
-      ],
-      "credentials": {
-        "microsoftOneDriveOAuth2Api": {
-          "id": "Igf1otHvibTuTAg8",
-          "name": "Microsoft Drive account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "folder",
-        "operation": "search",
-        "query": "dashboard"
-      },
-      "id": "9a530ec7-49db-46d4-bfc6-8d14f1d936ed",
-      "name": "Microsoft OneDrive1",
-      "type": "n8n-nodes-base.microsoftOneDrive",
-      "typeVersion": 1,
-      "position": [
-        1020,
-        920
-      ],
-      "credentials": {
-        "microsoftOneDriveOAuth2Api": {
-          "id": "Igf1otHvibTuTAg8",
-          "name": "Microsoft Drive account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"OPORTUNIDAD_CONSULTA_BD\", fileName: \"oportunidad_fecha_citaBD.csv\"} },\n    { json: { procedureName: \"FACTURACION TOTAL  PRODUCCION\", fileName: \"fecha_cita.csv\" } }\n];"
-      },
-      "id": "02aee1f6-40d7-44b8-a783-ebb6218966ca",
-      "name": "Procedures",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1220,
-        520
+        940,
+        540
       ]
     }
   ],
   "pinData": {},
   "connections": {
     "Schedule Trigger": {
-      "main": [
-        [
-          {
-            "node": "Today",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Names": {
-      "main": [
-        [
-          {
-            "node": "Execute Workflow Download",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Today": {
-      "main": [
-        [
-          {
-            "node": "Yesterday",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Yesterday": {
-      "main": [
-        [
-          {
-            "node": "Date",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Date": {
       "main": [
         [
           {
@@ -287,22 +116,11 @@
         ]
       ]
     },
-    "Execute Workflow Download": {
+    "Names": {
       "main": [
         [
           {
-            "node": "Execute Command oportunidad_cita",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Read/Write Files from Disk": {
-      "main": [
-        [
-          {
-            "node": "Microsoft OneDrive",
+            "node": "Execute Workflow ETL",
             "type": "main",
             "index": 0
           }
@@ -319,28 +137,17 @@
           }
         ]
       ]
-    },
-    "Execute Command oportunidad_cita": {
-      "main": [
-        [
-          {
-            "node": "Read/Write Files from Disk",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "5ff0e5d7-f13c-45fb-8902-ab7d336cdeb0",
+  "versionId": "3853b4ee-192e-441c-9276-8547d0e79901",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "8e1646d911d660138c8d1fe46f01587a75ef86aac5f97b836299575a4fe88673"
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
   },
-  "id": "DJsVuASjrTsYQs6z",
+  "id": "LapFAKrzSs94w6WM",
   "tags": []
 }

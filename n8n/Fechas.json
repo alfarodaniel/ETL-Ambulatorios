@@ -1,0 +1,262 @@
+{
+  "name": "Fechas",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d2e4d79e-cd61-4788-befe-74c3a4511dae",
+      "name": "Today",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        580,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $json.currentDate }}",
+        "duration": "={{ $('Execute Workflow Trigger').item.json.startDay }}",
+        "outputFieldName": "setStartDate",
+        "options": {}
+      },
+      "id": "30050688-16c3-4b25-b491-642fbd7a1d51",
+      "name": "setStartDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        780,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.setStartDate }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "startDate",
+        "options": {}
+      },
+      "id": "ecc6e306-1977-4284-8715-88dffd51db93",
+      "name": "startDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        980,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Today').item.json.currentDate }}",
+        "duration": "={{ $('Execute Workflow Trigger').item.json.endDay }}",
+        "outputFieldName": "setEndDate",
+        "options": {}
+      },
+      "id": "29681342-2d41-4926-ac41-f8ff6649b1a4",
+      "name": "setEndDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        780,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.setEndDate }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "endDate",
+        "options": {}
+      },
+      "id": "136c194b-7348-44ea-925b-c59ccf68daee",
+      "name": "endDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        980,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('setEndDate').item.json.setEndDate }}",
+        "duration": "={{ $('Execute Workflow Trigger').item.json.addDay }}",
+        "outputFieldName": "setAddDate",
+        "options": {}
+      },
+      "id": "89da0d68-3be0-4ff2-93c6-d7b693d11b04",
+      "name": "setAddDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        780,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.setAddDate }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "addDate",
+        "options": {}
+      },
+      "id": "aa529937-e0e5-42ee-9fd9-944b608e1cd4",
+      "name": "addDate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        980,
+        820
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "89ed436c-158e-4f22-8cf7-8652b78072dd",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "startDate",
+              "value": "={{ $('startDate').item.json.startDate }}"
+            },
+            {
+              "name": "endDate",
+              "value": "={{ $('endDate').item.json.endDate }}"
+            },
+            {
+              "name": "addDate",
+              "value": "={{ $('addDate').item.json.addDate }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3f3b596e-1b83-40d2-96aa-67bd0ffd7f71",
+      "name": "Dates",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1180,
+        820
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Today": {
+      "main": [
+        [
+          {
+            "node": "setStartDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setStartDate": {
+      "main": [
+        [
+          {
+            "node": "startDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "startDate": {
+      "main": [
+        [
+          {
+            "node": "setEndDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setEndDate": {
+      "main": [
+        [
+          {
+            "node": "endDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "endDate": {
+      "main": [
+        [
+          {
+            "node": "setAddDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setAddDate": {
+      "main": [
+        [
+          {
+            "node": "addDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "addDate": {
+      "main": [
+        [
+          {
+            "node": "Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "84f7779e-7c4a-4ce8-9f4d-438033b80dd6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "08k9xdf0VByNBZM2",
+  "tags": []
+}

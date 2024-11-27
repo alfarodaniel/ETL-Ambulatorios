@@ -1,0 +1,259 @@
+{
+  "name": "Procedimiento ETL con EXE",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 217.0756044906389,
+        "width": 578.8721112077363
+      },
+      "id": "8b7872aa-dc87-4c97-be1a-a87882b9aa52",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "N2MT5B1JZew9qtME",
+          "mode": "list",
+          "cachedResultName": "Procedimiento SQL a CSV"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "f0ced33d-05a9-40c6-8f97-9c98543c7854",
+      "name": "Execute Workflow Download",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.startDate }}_{{ $('Names').item.json.endDate }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "5abf523c-91e1-44c6-9c96-f29335b98254",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        660
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "parentId": "={{ $('Execute Workflow Trigger').item.json.folderID }}",
+        "binaryData": true
+      },
+      "id": "dc9feac4-6006-41b2-89aa-0a4eca4238ab",
+      "name": "Microsoft OneDrive",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        980,
+        660
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "search",
+        "query": "dashboard"
+      },
+      "id": "fc0d7c24-44e7-4526-85c0-2058411cfaef",
+      "name": "Microsoft OneDrive1",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        980,
+        460
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.folderName }}"
+            },
+            {
+              "name": "procedureName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.procedureName }}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.fileName }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "62bdc5c4-6e51-40d2-a001-3320eff1b483",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        760,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "29e5a60d-5941-426f-9038-2ca00ea914ca",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $('Execute Workflow Trigger').item.json.folderName }} && {{ $('Execute Workflow Trigger').item.json.commandName }}"
+      },
+      "id": "9682390c-2e91-4f52-8dad-611e2f092520",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        580,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultName": "Fechas"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "96268c46-8351-4e57-9174-ed52dd83ed50",
+      "name": "Execute Workflow Dates",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Workflow Download": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Dates": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6bc79ebd-1ffd-477c-aac6-d73e33dd01a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "RF1SwhUOyNOyWOAW",
+  "tags": []
+}

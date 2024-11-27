@@ -3,29 +3,16 @@
   "nodes": [
     {
       "parameters": {
-        "options": {}
-      },
-      "id": "d0e80f83-a090-46ec-a162-e0a7c7fa2547",
-      "name": "Today",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        580,
-        460
-      ]
-    },
-    {
-      "parameters": {
         "content": "## Variables",
-        "height": 358.8413702564046,
-        "width": 952.8811202167453
+        "height": 217.0756044906389,
+        "width": 578.8721112077363
       },
-      "id": "8b7872aa-dc87-4c97-be1a-a87882b9aa52",
+      "id": "1a71e00d-c2f8-49d9-9e20-4f8e01a70909",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        349,
+        320,
         420
       ]
     },
@@ -33,53 +20,40 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "N2MT5B1JZew9qtME",
+          "value": "ImahTPb1ZL8BNMGb",
           "mode": "list",
-          "cachedResultName": "Procedimiento SQL a CSV"
+          "cachedResultName": "Procedimiento SQL a XLSX"
         },
         "mode": "each",
         "options": {
           "waitForSubWorkflow": true
         }
       },
-      "id": "f0ced33d-05a9-40c6-8f97-9c98543c7854",
+      "id": "ba820363-5e86-49d1-b809-d97f3e09d50d",
       "name": "Execute Workflow Download",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.1,
       "position": [
         380,
-        840
+        660
       ]
     },
     {
       "parameters": {
-        "command": "=cd {{ $('Execute Workflow Trigger').item.json.folderName }} && {{ $('Execute Workflow Trigger').item.json.commandName }}"
-      },
-      "id": "9682390c-2e91-4f52-8dad-611e2f092520",
-      "name": "Execute Command oportunidad_cita",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        580,
-        840
-      ]
-    },
-    {
-      "parameters": {
-        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.fileName }}{{ $('Execute Workflow Trigger').item.json.extName }}",
         "options": {
-          "fileExtension": ".xlsx",
-          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('startDate').item.json.startDate }}_{{ $('endDate').item.json.endDate }}.xlsx",
+          "fileExtension": "={{ $('Execute Workflow Trigger').item.json.extName }}",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.fileName }}_{{ $('Names').item.json.startDate }}_{{ $('Names').item.json.endDate }}{{ $('Execute Workflow Trigger').item.json.extName }}",
           "dataPropertyName": "data"
         }
       },
-      "id": "5abf523c-91e1-44c6-9c96-f29335b98254",
+      "id": "9bdffb2a-a155-4ae7-aa40-69b53b284d37",
       "name": "Read/Write Files from Disk",
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        780,
-        840
+        580,
+        660
       ],
       "executeOnce": true,
       "alwaysOutputData": false,
@@ -90,13 +64,13 @@
         "parentId": "={{ $('Execute Workflow Trigger').item.json.folderID }}",
         "binaryData": true
       },
-      "id": "dc9feac4-6006-41b2-89aa-0a4eca4238ab",
+      "id": "546a5855-5ca3-4648-a3be-f512a327194b",
       "name": "Microsoft OneDrive",
       "type": "n8n-nodes-base.microsoftOneDrive",
       "typeVersion": 1,
       "position": [
-        980,
-        840
+        760,
+        660
       ],
       "credentials": {
         "microsoftOneDriveOAuth2Api": {
@@ -111,13 +85,13 @@
         "operation": "search",
         "query": "dashboard"
       },
-      "id": "fc0d7c24-44e7-4526-85c0-2058411cfaef",
+      "id": "0162d558-e381-4b7f-b4b0-1d06b5525225",
       "name": "Microsoft OneDrive1",
       "type": "n8n-nodes-base.microsoftOneDrive",
       "typeVersion": 1,
       "position": [
-        1180,
-        840
+        980,
+        460
       ],
       "credentials": {
         "microsoftOneDriveOAuth2Api": {
@@ -129,117 +103,11 @@
     },
     {
       "parameters": {
-        "operation": "addToDate",
-        "magnitude": "={{ $json.currentDate }}",
-        "duration": "={{ $('Execute Workflow Trigger').item.json.startDay }}",
-        "outputFieldName": "setStartDate",
-        "options": {}
-      },
-      "id": "511669c2-da2e-4cd3-9c8f-634719574989",
-      "name": "setStartDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        780,
-        460
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json.setStartDate }}",
-        "format": "=yyyyMMdd",
-        "outputFieldName": "startDate",
-        "options": {}
-      },
-      "id": "6c62dd52-3590-44ff-bd63-5478ae762555",
-      "name": "startDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        980,
-        460
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "addToDate",
-        "magnitude": "={{ $('Today').item.json.currentDate }}",
-        "duration": "={{ $('Execute Workflow Trigger').item.json.endDay }}",
-        "outputFieldName": "setEndDate",
-        "options": {}
-      },
-      "id": "d29b6a9a-44fd-4b4f-bf8b-67c6e2e0a3d0",
-      "name": "setEndDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        380,
-        640
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json.setEndDate }}",
-        "format": "=yyyyMMdd",
-        "outputFieldName": "endDate",
-        "options": {}
-      },
-      "id": "3161dfc7-5cf6-4723-97f2-1c52e853b166",
-      "name": "endDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        580,
-        640
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "addToDate",
-        "magnitude": "={{ $('setEndDate').item.json.setEndDate }}",
-        "duration": "={{ $('Execute Workflow Trigger').item.json.addDay }}",
-        "outputFieldName": "setAddDate",
-        "options": {}
-      },
-      "id": "3eea876c-3e7d-4986-9d7f-8746f63286e6",
-      "name": "setAddDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        780,
-        640
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json.setAddDate }}",
-        "format": "=yyyyMMdd",
-        "outputFieldName": "addDate",
-        "options": {}
-      },
-      "id": "9ada1973-934b-4b96-95f4-aa914f5be0d4",
-      "name": "addDate",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        980,
-        640
-      ]
-    },
-    {
-      "parameters": {
         "values": {
           "string": [
             {
               "name": "folderName",
               "value": "={{ $('Execute Workflow Trigger').item.json.folderName }}"
-            },
-            {
-              "name": "startDate",
-              "value": "={{ $('startDate').item.json.startDate }}"
             },
             {
               "name": "procedureName",
@@ -248,23 +116,27 @@
             {
               "name": "fileName",
               "value": "={{ $('Execute Workflow Trigger').item.json.fileName }}"
+            },
+            {
+              "name": "extName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.extName }}"
             }
           ]
         },
         "options": {}
       },
-      "id": "62bdc5c4-6e51-40d2-a001-3320eff1b483",
+      "id": "33c8fff3-054c-43a6-9a14-a506440a5f22",
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        1180,
-        640
+        760,
+        460
       ],
       "typeVersion": 1
     },
     {
       "parameters": {},
-      "id": "29e5a60d-5941-426f-9038-2ca00ea914ca",
+      "id": "239eaa75-88f7-46af-9447-f34cdcf6311c",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
@@ -272,33 +144,32 @@
         380,
         460
       ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultName": "Fechas"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "3a0c8303-1bcc-43ff-84ed-c400e3d9ff8f",
+      "name": "Execute Workflow Dates",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        460
+      ]
     }
   ],
   "pinData": {},
   "connections": {
-    "Today": {
-      "main": [
-        [
-          {
-            "node": "setStartDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Execute Workflow Download": {
-      "main": [
-        [
-          {
-            "node": "Execute Command oportunidad_cita",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute Command oportunidad_cita": {
       "main": [
         [
           {
@@ -320,72 +191,6 @@
         ]
       ]
     },
-    "setStartDate": {
-      "main": [
-        [
-          {
-            "node": "startDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "startDate": {
-      "main": [
-        [
-          {
-            "node": "setEndDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "setEndDate": {
-      "main": [
-        [
-          {
-            "node": "endDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "endDate": {
-      "main": [
-        [
-          {
-            "node": "setAddDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "setAddDate": {
-      "main": [
-        [
-          {
-            "node": "addDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "addDate": {
-      "main": [
-        [
-          {
-            "node": "Names",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Names": {
       "main": [
         [
@@ -401,7 +206,18 @@
       "main": [
         [
           {
-            "node": "Today",
+            "node": "Execute Workflow Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Dates": {
+      "main": [
+        [
+          {
+            "node": "Names",
             "type": "main",
             "index": 0
           }
@@ -413,11 +229,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "18ec64e5-6f41-407f-b53d-08219570e184",
+  "versionId": "72ef9345-5e80-4e64-a6a6-c77473fc810d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
   },
-  "id": "RF1SwhUOyNOyWOAW",
+  "id": "zHVOCIcKp1yNh0KU",
   "tags": []
 }

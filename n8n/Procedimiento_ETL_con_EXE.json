@@ -116,6 +116,10 @@
             {
               "name": "fileName",
               "value": "={{ $('Execute Workflow Trigger').item.json.fileName }}"
+            },
+            {
+              "name": "extName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.extName }}"
             }
           ]
         },
@@ -249,7 +253,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "6bc79ebd-1ffd-477c-aac6-d73e33dd01a4",
+  "versionId": "d99071be-eee7-4a7e-b4aa-c3cccfd7d0eb",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

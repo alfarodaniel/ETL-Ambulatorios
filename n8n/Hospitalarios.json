@@ -1,5 +1,5 @@
 {
-  "name": "Ambulatorios",
+  "name": "Hospitalarios",
   "nodes": [
     {
       "parameters": {
@@ -11,7 +11,7 @@
           ]
         }
       },
-      "id": "cce15dad-bb7b-4ad7-a32e-2847dab7c625",
+      "id": "bb0c2329-accc-4541-829f-89da99d8a3d5",
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -26,25 +26,17 @@
           "string": [
             {
               "name": "folderName",
-              "value": "C:/gestion/Cuadros de control/Ambulatorios/"
-            },
-            {
-              "name": "commandName",
-              "value": "oportunidad_cita.exe"
-            },
-            {
-              "name": "resultName",
-              "value": "Oportunidad_cita"
+              "value": "C:/gestion/Cuadros de control/Hospitalarios/"
             },
             {
               "name": "folderID",
-              "value": "014SRZLAO4FM74IRXBHFB37BR4Q4M4B46I"
+              "value": "014SRZLAJ27QXZXRV6G5D3DYKESGOSRRKY"
             }
           ]
         },
         "options": {}
       },
-      "id": "445ba7b4-56d2-4e02-9781-161ad664d86b",
+      "id": "e3a83da8-fda2-4fff-b8a3-4748bdd5ea52",
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
@@ -59,7 +51,7 @@
         "height": 201,
         "width": 319.5405405405405
       },
-      "id": "0866c0cd-16f9-414f-a96c-1bc6e60d9328",
+      "id": "0482c2d3-8505-407a-b48d-bcc83b197bbc",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -70,9 +62,9 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"OPORTUNIDAD_CONSULTA_BD\", \n              fileName: \"oportunidad_fecha_citaBD\",\n              extName: \".csv\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 0} },\n    { json: { procedureName: \"OPORTUNIDAD FECHA CITA\",\n              fileName: \"fecha_cita\",\n              extName: \".csv\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 0} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS_DE_HOSPITALIZACION\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} },\n    { json: { procedureName: \"PACIENTES_HOSPITALIZADOS_CON_EGRESO\",\n              fileName: \"egresos\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} }\n];"
       },
-      "id": "c99edd74-2eb8-40e9-9f3c-a5bab9379307",
+      "id": "cbf7d838-a998-45ad-b6f0-83cc562b3a20",
       "name": "Procedures",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -85,15 +77,16 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "RF1SwhUOyNOyWOAW",
+          "value": "zHVOCIcKp1yNh0KU",
           "mode": "list",
-          "cachedResultName": "Procedimiento ETL con EXE"
+          "cachedResultName": "Procedimiento ETL"
         },
+        "mode": "each",
         "options": {
           "waitForSubWorkflow": true
         }
       },
-      "id": "f829d0f8-1b57-4260-bd07-9bf33427e342",
+      "id": "af7aecdc-9ba8-4f93-88c0-4fa0c237125f",
       "name": "Execute Workflow ETL",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.1,
@@ -143,11 +136,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e3910980-48ae-4fb0-bcec-2a2cad223dff",
+  "versionId": "6fb5cf09-46fc-4c3d-8167-30ab8834efa4",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
   },
-  "id": "LapFAKrzSs94w6WM",
+  "id": "eyrZG5JyUPqpxENF",
   "tags": []
 }

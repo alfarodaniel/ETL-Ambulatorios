@@ -1,13 +1,13 @@
 {
-  "name": "Procedimiento SQL a CSV",
+  "name": "Procedimiento SQL a XLSX",
   "nodes": [
     {
       "parameters": {
-        "content": "## Guardar el resultado a CSV",
+        "content": "## Guardar el resultado a XLSX",
         "height": 242,
         "width": 399
       },
-      "id": "7347ec72-fb2f-4478-a89d-db85188959b0",
+      "id": "ba904d14-dfc0-4ecb-8795-a382a458976d",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -21,7 +21,7 @@
         "operation": "executeQuery",
         "query": "EXEC [{{ $('Execute Workflow Trigger').item.json.procedureName }}] '{{ $('Execute Workflow Trigger').item.json.startDate }}','{{ $('Execute Workflow Trigger').item.json.addDate }}'"
       },
-      "id": "9efc0ccd-4cc8-4fe7-b59b-4199d6c72cc2",
+      "id": "e31c34f7-a500-462f-9114-80d1cedb34d5",
       "name": "Microsoft SQL",
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
@@ -38,9 +38,10 @@
     },
     {
       "parameters": {
+        "operation": "xlsx",
         "options": {}
       },
-      "id": "cafc69ec-1101-4d38-ad9a-bfccc343706a",
+      "id": "6dab845e-a080-4bcb-a9eb-b4bc359ec624",
       "name": "Convert to File",
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
@@ -55,7 +56,7 @@
         "fileName": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.fileName }}{{ $('Execute Workflow Trigger').item.json.extName }}",
         "options": {}
       },
-      "id": "ab20b4d9-ac08-4c5b-9e6f-9707e363abc8",
+      "id": "aadc2aa1-5a63-4048-9dcc-e6982accd803",
       "name": "Read/Write Files from Disk",
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
@@ -70,7 +71,7 @@
         "height": 242,
         "width": 341
       },
-      "id": "8c31f8ea-4166-4910-81f7-6e29e9fdcbee",
+      "id": "38df8889-4122-45a4-9db4-02c9e0c589a8",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -81,7 +82,7 @@
     },
     {
       "parameters": {},
-      "id": "e679b706-6562-45ac-b7c6-cf8c87e12edc",
+      "id": "6fccd793-65c5-416a-a855-5bb4cae2bf58",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
@@ -131,11 +132,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "eb523fb0-2398-4d09-ab4e-50b07ec72e3a",
+  "versionId": "84bb736d-590b-4397-a56f-f7c3c3ebec16",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
   },
-  "id": "N2MT5B1JZew9qtME",
+  "id": "ImahTPb1ZL8BNMGb",
   "tags": []
 }

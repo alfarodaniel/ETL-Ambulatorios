@@ -222,6 +222,11 @@ pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(
 pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(
     index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
 
+# Verificar si la columna "Vinculado" existe
+if 'Vinculado' not in pivote_AtendidaVinculacion.columns:
+    # Si no existe, crearla y llenarla con ceros
+    pivote_AtendidaVinculacion['Vinculado'] = 0
+
 # Pivote Tipo
 
 # Crear la tabla pivote Tipo, crea columnas 'Control_y', 'Primer Vez_y', 'Remision_y'

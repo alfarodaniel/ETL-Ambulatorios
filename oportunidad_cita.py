@@ -196,31 +196,31 @@ dfOportunidad_cita_Atendida = dfOportunidad_cita[dfOportunidad_cita['Estado Cita
 
 # Crear la tabla pivote Asignadas, crea columna 'Asignadas'
 pivote_Asignadas = dfOportunidad_cita.groupby(
-    ['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA']).size().reset_index(name='Asignadas')
+    ['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA']).size().reset_index(name='Asignadas')
 
 # Pivote Estado
 
 # Crear la tabla pivote Estados, crea columnas 'Atendida_x', 'Cancelada_x', 'Incumplida_x'
 pivote_Estados = dfOportunidad_cita.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Reprogramadas
 
 # Crear la tabla pivote Estados, crea columnas 'Atendida_y', 'Cancelada_y', 'Incumplida_y', 'No Reprogramada', 'Reprogramada'
 pivote_Reprogramadas = dfOportunidad_cita.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Tipo
 
 # Crear la tabla pivote Atendida Tipo, crea columnas 'Control_x', 'Primer Vez_x', 'Remision_x'
 pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Atendida Vinculacion
 
 # Crear la tabla pivote Atendida Vinculacion, crea columnas 'Contributivo', 'Otro', 'Subsidiado', 'Vinculado'
 pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
 
 # Verificar si la columna "Vinculado" existe
 if 'Vinculado' not in pivote_AtendidaVinculacion.columns:
@@ -231,69 +231,73 @@ if 'Vinculado' not in pivote_AtendidaVinculacion.columns:
 
 # Crear la tabla pivote Tipo, crea columnas 'Control_y', 'Primer Vez_y', 'Remision_y'
 pivote_Tipo = dfOportunidad_cita.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
 # Pivote Tipo Oportunidad
 
 # Crear la tabla pivote Tipo Oportunidad, crea columnas 'Control', 'Primer Vez', 'Remision'
 pivote_TipoOportunidad = dfOportunidad_cita.pivot_table(
-    values='Oportunidad', index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
+    values='Oportunidad', index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
 
 # Pivote Tipo Asignacion
 
 # Crear la tabla pivote Tipo Asignacion, crea columnas 'Extra', 'Normal'
 pivote_TipoAsignacion = dfOportunidad_cita_Atendida.pivot_table(
-    index=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
+    index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
 
 # Combinar pivotes en dfConsulta_externa
 
 # Combinar los pivotes en dfConsulta_externa
-dfConsulta_pivote = pd.merge(pivote_Asignadas, pivote_Estados, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Reprogramadas, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaTipo, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaVinculacion, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Tipo, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
-dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(pivote_Asignadas, pivote_Estados, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Reprogramadas, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaTipo, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_AtendidaVinculacion, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_Tipo, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
+dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
 
 # Crear columan 'Reales' como la suma de 'Programado' + 'No Reprogramada' + 'Reprogramada' + 'Extra'
 dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] + dfConsulta_pivote['No Reprogramada'] + dfConsulta_pivote['Reprogramada'] + dfConsulta_pivote['Extra']
 
 # Crear 'horas_inf' como 'Programado' dividido 3
-dfConsulta_pivote['horas_inf'] = dfConsulta_pivote['Asignadas'] / 3
+#dfConsulta_pivote['horas_inf'] = dfConsulta_pivote['Asignadas'] / 3
 
 # Crear 'oportunidad_primera_vez' dividiendo 'Primer Vez_y' por 'Primer Vez' y manejando errores con np.where
-dfConsulta_pivote['oportunidad_primera_vez'] = np.where(
-    dfConsulta_pivote['Primer Vez_y'] != 0, dfConsulta_pivote['Primer Vez'] / dfConsulta_pivote['Primer Vez_y'], 0)
+#dfConsulta_pivote['oportunidad_primera_vez'] = np.where(
+#    dfConsulta_pivote['Primer Vez_y'] != 0, dfConsulta_pivote['Primer Vez'] / dfConsulta_pivote['Primer Vez_y'], 0)
 
 # Crear 'oportunidad_control' dividiendo 'Primer Vez_y' por 'Primer Vez' y manejando errores con np.where
-dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
+#dfConsulta_pivote['oportunidad_control'] = np.where(dfConsulta_pivote['Control_y'] != 0, dfConsulta_pivote['Control'] / dfConsulta_pivote['Control_y'], 0)
 
 # Crear 'val1' con valor 'Ok' si 'Primer Vez_y' + 'Control_y' = 'Asignadas', de lo contrario 'Error'
-dfConsulta_pivote['val1'] = np.where(
-    dfConsulta_pivote['Primer Vez_y'] + dfConsulta_pivote['Control_y'] ==
-    dfConsulta_pivote['Asignadas'], 'Ok', 'Error')
+#dfConsulta_pivote['val1'] = np.where(
+#    dfConsulta_pivote['Primer Vez_y'] + dfConsulta_pivote['Control_y'] ==
+#    dfConsulta_pivote['Asignadas'], 'Ok', 'Error')
 
 # Crear 'val2' con valor 'Ok' si ('Vinculado' + 'Subsidiado' + 'Contributivo' + 'Otro') = ('Primer Vez_x' + 'Control_x'), de lo contrario 'Error'
-dfConsulta_pivote['val2'] = np.where(
-    dfConsulta_pivote['Vinculado'] + dfConsulta_pivote['Subsidiado'] + dfConsulta_pivote['Contributivo'] + dfConsulta_pivote['Otro'] ==
-    dfConsulta_pivote['Primer Vez_x'] + dfConsulta_pivote['Control_x'], 'Ok', 'Error')
+#dfConsulta_pivote['val2'] = np.where(
+#    dfConsulta_pivote['Vinculado'] + dfConsulta_pivote['Subsidiado'] + dfConsulta_pivote['Contributivo'] + dfConsulta_pivote['Otro'] ==
+#    dfConsulta_pivote['Primer Vez_x'] + dfConsulta_pivote['Control_x'], 'Ok', 'Error')
 
 # Seleccionar las columnas finales
 dfConsulta_pivote = dfConsulta_pivote[[
-    'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA', 'Asignadas', 'Reales',
+    'Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA', 'Asignadas', 'Reales',
     'Asignadas', 'Reprogramada', 'Cancelada_x', 'Incumplida_x', 'Primer Vez_x',
     'Control_x', 'Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
-    'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',
-    'Control', 'oportunidad_control', 'val1', 'val2']]
+    #'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',
+    'Primer Vez_y', 'Primer Vez', 'Control_y',
+    #'Control', 'oportunidad_control', 'val1', 'val2']]
+    'Control']]
 
 # Cambiar los nombres de las columnas
 dfConsulta_pivote.columns = [
-    'Tipo', 'Sede', 'Nieto', 'Programado', 'Reales',
+    'Responsable', 'Fecha', 'Tipo', 'Sede', 'Nieto', 'Programado', 'Reales',
     'Asignadas','Reprogramada', 'Cancelada', 'Inasistencia', 'Primer_Vez',
     'Control','Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
-    'horas_inf', 'asig_primer_vez', 'dias_primer_vez', 'oportunidad_primera_vez', 'asig_control',
-    'dias_control', 'oportunidad_control', 'val1', 'val2']
+    #'horas_inf', 'asig_primer_vez', 'dias_primer_vez', 'oportunidad_primera_vez', 'asig_control',
+    'asig_primer_vez', 'dias_primer_vez', 'asig_control',
+    #'dias_control', 'oportunidad_control', 'val1', 'val2']
+    'dias_control']
 
 # %% Descargar los archivos
 
@@ -305,13 +309,13 @@ dfOportunidad_cita['Fecha Cita'] = dfOportunidad_cita['Fecha Cita'].dt.strftime(
 dfOportunidad_cita['Fecha Nacimiento'] = dfOportunidad_cita['Fecha Nacimiento'].dt.strftime('%d/%m/%Y')
 
 # Convertir los df a xlsx
-print('- Descargando Oportunidad_cita.xlsx')
-con.execute("COPY (SELECT * FROM dfOportunidad_cita) TO 'Oportunidad_cita.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-print('- Descargando FechaVacias.xlsx')
-con.execute("COPY (SELECT * FROM dfFechaVacias) TO 'FechaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-print('- Descargando Oportunidad_citaVacias.xlsx')
-con.execute("COPY (SELECT * FROM dfOportunidad_citaVacias) TO 'Oportunidad_citaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-print('- Descargando Oportunidad_citaTipoCitaError.xlsx')
-con.execute("COPY (SELECT * FROM dfOportunidad_citaTipoCitaError) TO 'Oportunidad_citaTipoCitaError.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+#print('- Descargando Oportunidad_cita.xlsx')
+#con.execute("COPY (SELECT * FROM dfOportunidad_cita) TO 'Oportunidad_cita.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+#print('- Descargando FechaVacias.xlsx')
+#con.execute("COPY (SELECT * FROM dfFechaVacias) TO 'FechaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+#print('- Descargando Oportunidad_citaVacias.xlsx')
+#con.execute("COPY (SELECT * FROM dfOportunidad_citaVacias) TO 'Oportunidad_citaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+#print('- Descargando Oportunidad_citaTipoCitaError.xlsx')
+#con.execute("COPY (SELECT * FROM dfOportunidad_citaTipoCitaError) TO 'Oportunidad_citaTipoCitaError.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
 print('- Descargando Consulta_pivote.xlsx')
 con.execute("COPY (SELECT * FROM dfConsulta_pivote) TO 'Consulta_pivote.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")

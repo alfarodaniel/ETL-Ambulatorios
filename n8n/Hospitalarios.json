@@ -6,7 +6,8 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 1
+              "triggerAtHour": 1,
+              "triggerAtMinute": 10
             }
           ]
         }
@@ -27,10 +28,6 @@
             {
               "name": "folderName",
               "value": "C:/gestion/Cuadros de control/Hospitalarios/"
-            },
-            {
-              "name": "folderID",
-              "value": "014SRZLAJ27QXZXRV6G5D3DYKESGOSRRKY"
             }
           ]
         },
@@ -62,7 +59,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS_DE_HOSPITALIZACION\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} },\n    { json: { procedureName: \"PACIENTES_HOSPITALIZADOS_CON_EGRESO\",\n              fileName: \"egresos\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS_DE_HOSPITALIZACION\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAJI3WBOU67OJBA3K2O5W42P3L77\"} },\n    { json: { procedureName: \"PACIENTES_HOSPITALIZADOS_CON_EGRESO\",\n              fileName: \"egresos\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLALF5EEHWWK7Y5BIBMZ2JZ7QHXLW\"} },\n    { json: { procedureName: \"REINGRESOS_HOSPITALARIOS\",\n              fileName: \"reingresos\",\n              extName: \".xlsx\",\n              startDay: -15,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP5QHQEX3UA65HJ5OQK63Y5YIJ4\"} }\n];"
       },
       "id": "cbf7d838-a998-45ad-b6f0-83cc562b3a20",
       "name": "Procedures",
@@ -132,11 +129,11 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "6fb5cf09-46fc-4c3d-8167-30ab8834efa4",
+  "versionId": "2137e7c9-681b-4bd2-914e-9e3ca75ba011",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

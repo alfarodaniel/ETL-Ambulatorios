@@ -34,7 +34,7 @@
             },
             {
               "name": "resultName",
-              "value": "Oportunidad_cita"
+              "value": "Consulta_pivote"
             },
             {
               "name": "folderID",
@@ -139,11 +139,11 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e3910980-48ae-4fb0-bcec-2a2cad223dff",
+  "versionId": "6cd3338a-55d7-4877-b50d-685baa04d654",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

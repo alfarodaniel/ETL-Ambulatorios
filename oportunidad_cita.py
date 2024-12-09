@@ -191,6 +191,28 @@ dfOportunidad_cita['Reprogramadas'] = np.where(
 
 # %% Pivotes
 
+# Función para verificar columnas y crearlas en 0 si no existen
+def verificaColumnas(df, columnas):
+    """
+    Verifica la existencia de las columnas y las crea en 0 si no existen.
+    
+    Args:
+    - df (DataFrame): DataFrame a evaluar.
+    - columnas (list): Lista de columnas a evaluar.
+    
+    Returns:
+    - df (DataFrame): DataFrame con las columas verificadas.
+    """
+
+    # Itera por cada columna en la lista columnas
+    for columna in columnas:
+        # Valida si la columna existe
+        if columna not in df.columns:
+            # Si no existe, crearla y llenarla con ceros
+            df[columna] = 0
+
+    return df
+
 # Filtrar dfOportunidad_cita por 'Estado Cita' igual a 'Atendida' creando dfOportunidad_cita_Atendida
 dfOportunidad_cita_Atendida = dfOportunidad_cita[dfOportunidad_cita['Estado Cita'] == 'Atendida']
 
@@ -204,11 +226,17 @@ pivote_Asignadas = dfOportunidad_cita.groupby(
 pivote_Estados = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
+# Verificar si las columnas existen
+pivote_Estados = verificaColumnas(pivote_Estados, ['Atendida', 'Cancelada', 'Incumplida'])
+
 # Pivote Reprogramadas
 
 # Crear la tabla pivote Estados, crea columnas 'Atendida_y', 'Cancelada_y', 'Incumplida_y', 'No Reprogramada', 'Reprogramada'
 pivote_Reprogramadas = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
+
+# Verificar si las columnas existen
+pivote_Reprogramadas = verificaColumnas(pivote_Reprogramadas, ['Atendida', 'Cancelada', 'Incumplida', 'No Reprogramada', 'Reprogramada'])
 
 # Pivote Atendida Tipo
 
@@ -216,16 +244,17 @@ pivote_Reprogramadas = dfOportunidad_cita.pivot_table(
 pivote_AtendidaTipo = dfOportunidad_cita_Atendida.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
+# Verificar si las columnas existen
+pivote_AtendidaTipo = verificaColumnas(pivote_AtendidaTipo, ['Control', 'Primer Vez', 'Remision'])
+
 # Pivote Atendida Vinculacion
 
 # Crear la tabla pivote Atendida Vinculacion, crea columnas 'Contributivo', 'Otro', 'Subsidiado', 'Vinculado'
 pivote_AtendidaVinculacion = dfOportunidad_cita_Atendida.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Vinculacion', aggfunc='size', fill_value=0).reset_index()
 
-# Verificar si la columna "Vinculado" existe
-if 'Vinculado' not in pivote_AtendidaVinculacion.columns:
-    # Si no existe, crearla y llenarla con ceros
-    pivote_AtendidaVinculacion['Vinculado'] = 0
+# Verificar si las columnas existen
+pivote_AtendidaVinculacion = verificaColumnas(pivote_AtendidaVinculacion, ['Contributivo', 'Otro', 'Subsidiado', 'Vinculado'])
 
 # Pivote Tipo
 
@@ -233,17 +262,26 @@ if 'Vinculado' not in pivote_AtendidaVinculacion.columns:
 pivote_Tipo = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='size', fill_value=0).reset_index()
 
+# Verificar si las columnas existen
+pivote_Tipo = verificaColumnas(pivote_Tipo, ['Control', 'Primer Vez', 'Remision'])
+
 # Pivote Tipo Oportunidad
 
 # Crear la tabla pivote Tipo Oportunidad, crea columnas 'Control', 'Primer Vez', 'Remision'
 pivote_TipoOportunidad = dfOportunidad_cita.pivot_table(
     values='Oportunidad', index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='TIPO CITA', aggfunc='sum', fill_value=0).reset_index()
 
+# Verificar si las columnas existen
+pivote_TipoOportunidad = verificaColumnas(pivote_TipoOportunidad, ['Control', 'Primer Vez', 'Remision'])
+
 # Pivote Tipo Asignacion
 
 # Crear la tabla pivote Tipo Asignacion, crea columnas 'Extra', 'Normal'
 pivote_TipoAsignacion = dfOportunidad_cita_Atendida.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Tipo Asignacion', aggfunc='size', fill_value=0).reset_index()
+
+# Verificar si las columnas existen
+pivote_TipoAsignacion = verificaColumnas(pivote_TipoAsignacion, ['Extra', 'Normal'])
 
 # Combinar pivotes en dfConsulta_externa
 
@@ -319,3 +357,4 @@ dfOportunidad_cita['Fecha Nacimiento'] = dfOportunidad_cita['Fecha Nacimiento'].
 #con.execute("COPY (SELECT * FROM dfOportunidad_citaTipoCitaError) TO 'Oportunidad_citaTipoCitaError.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
 print('- Descargando Consulta_pivote.xlsx')
 con.execute("COPY (SELECT * FROM dfConsulta_pivote) TO 'Consulta_pivote.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+# %%

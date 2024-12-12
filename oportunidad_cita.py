@@ -227,7 +227,7 @@ pivote_Estados = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
 # Verificar si las columnas existen
-pivote_Estados = verificaColumnas(pivote_Estados, ['Atendida', 'Cancelada', 'Incumplida'])
+pivote_Estados = verificaColumnas(pivote_Estados, ['Atendida', 'Cancelada', 'Inatencion', 'Incumplida'])
 
 # Pivote Reprogramadas
 
@@ -236,7 +236,7 @@ pivote_Reprogramadas = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
 
 # Verificar si las columnas existen
-pivote_Reprogramadas = verificaColumnas(pivote_Reprogramadas, ['Atendida', 'Cancelada', 'Incumplida', 'No Reprogramada', 'Reprogramada'])
+pivote_Reprogramadas = verificaColumnas(pivote_Reprogramadas, ['Atendida', 'Cancelada', 'Inatencion', 'Incumplida', 'No Reprogramada', 'Reprogramada'])
 
 # Pivote Atendida Tipo
 
@@ -295,7 +295,7 @@ dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['Nom
 dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
 
 # Crear columan 'Reales' como la suma de 'Programado' + 'No Reprogramada' + 'Reprogramada' + 'Extra'
-dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] + dfConsulta_pivote['No Reprogramada'] + dfConsulta_pivote['Reprogramada'] + dfConsulta_pivote['Extra']
+dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] - dfConsulta_pivote['No Reprogramada'] - dfConsulta_pivote['Reprogramada'] - dfConsulta_pivote['Extra'] - dfConsulta_pivote['Inatencion_x'] - dfConsulta_pivote['Inatencion_y']
 
 # Crear 'horas_inf' como 'Programado' dividido 3
 #dfConsulta_pivote['horas_inf'] = dfConsulta_pivote['Asignadas'] / 3

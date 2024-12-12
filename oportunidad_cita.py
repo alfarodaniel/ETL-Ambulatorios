@@ -222,7 +222,7 @@ pivote_Asignadas = dfOportunidad_cita.groupby(
 
 # Pivote Estado
 
-# Crear la tabla pivote Estados, crea columnas 'Atendida_x', 'Cancelada_x', 'Incumplida_x'
+# Crear la tabla pivote Estados, crea columnas 'Atendida_x', 'Cancelada_x', 'Inatencion_x', 'Incumplida_x'
 pivote_Estados = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Estado Cita', aggfunc='size', fill_value=0).reset_index()
 
@@ -231,7 +231,7 @@ pivote_Estados = verificaColumnas(pivote_Estados, ['Atendida', 'Cancelada', 'Ina
 
 # Pivote Reprogramadas
 
-# Crear la tabla pivote Estados, crea columnas 'Atendida_y', 'Cancelada_y', 'Incumplida_y', 'No Reprogramada', 'Reprogramada'
+# Crear la tabla pivote Estados, crea columnas 'Atendida_y', 'Cancelada_y', 'Inatencion_y', 'Incumplida_y', 'No Reprogramada', 'Reprogramada'
 pivote_Reprogramadas = dfOportunidad_cita.pivot_table(
     index=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], columns='Reprogramadas', aggfunc='size', fill_value=0).reset_index()
 
@@ -295,7 +295,7 @@ dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoOportunidad, on=['Nom
 dfConsulta_pivote = pd.merge(dfConsulta_pivote, pivote_TipoAsignacion, on=['Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA'], how='left')
 
 # Crear columan 'Reales' como la suma de 'Programado' + 'No Reprogramada' + 'Reprogramada' + 'Extra'
-dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] - dfConsulta_pivote['No Reprogramada'] - dfConsulta_pivote['Reprogramada'] - dfConsulta_pivote['Extra'] - dfConsulta_pivote['Inatencion_x'] - dfConsulta_pivote['Inatencion_y']
+dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] - dfConsulta_pivote['No Reprogramada'] - dfConsulta_pivote['Reprogramada'] - dfConsulta_pivote['Extra'] - dfConsulta_pivote['Inatencion_x']
 
 # Crear 'horas_inf' como 'Programado' dividido 3
 #dfConsulta_pivote['horas_inf'] = dfConsulta_pivote['Asignadas'] / 3
@@ -320,7 +320,7 @@ dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] - dfConsulta_pivote
 # Seleccionar las columnas finales
 dfConsulta_pivote = dfConsulta_pivote[[
     'Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA', 'Asignadas', 'Reales',
-    'Asignadas', 'Reprogramada', 'Cancelada_x', 'Incumplida_x', 'Primer Vez_x',
+    'Asignadas', 'Reprogramada', 'Cancelada_x', 'Inatencion_x', 'Incumplida_x', 'Primer Vez_x',
     'Control_x', 'Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
     #'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',
     'Primer Vez_y', 'Primer Vez', 'Control_y',
@@ -330,7 +330,7 @@ dfConsulta_pivote = dfConsulta_pivote[[
 # Cambiar los nombres de las columnas
 dfConsulta_pivote.columns = [
     'Responsable', 'Fecha', 'Tipo', 'Sede', 'Nieto', 'Programado', 'Reales',
-    'Asignadas','Reprogramada', 'Cancelada', 'Inasistencia', 'Primer_Vez',
+    'Asignadas','Reprogramada', 'Cancelada', 'Inatencion', 'Inasistencia', 'Primer_Vez',
     'Control','Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
     #'horas_inf', 'asig_primer_vez', 'dias_primer_vez', 'oportunidad_primera_vez', 'asig_control',
     'asig_primer_vez', 'dias_primer_vez', 'asig_control',

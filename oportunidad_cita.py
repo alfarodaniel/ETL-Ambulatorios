@@ -319,9 +319,10 @@ dfConsulta_pivote['Reales'] = dfConsulta_pivote['Asignadas'] - dfConsulta_pivote
 
 # Seleccionar las columnas finales
 dfConsulta_pivote = dfConsulta_pivote[[
-    'Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA', 'Asignadas', 'Reales',
-    'Asignadas', 'Reprogramada', 'Cancelada_x', 'Inatencion_x', 'Incumplida_x', 'Primer Vez_x',
-    'Control_x', 'Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
+    'Nombre Responsable', 'Fecha Cita', 'TIPO 2', 'Sede', 'nieto CIP AJUST FECHA CITA',
+    'Asignadas', 'Reales', 'Asignadas', 'Reprogramada', 'Cancelada_x',
+    'Inatencion_x', 'Incumplida_x', 'Primer Vez_x', 'Control_x', 'Vinculado',
+    'Subsidiado', 'Contributivo', 'Otro',
     #'horas_inf', 'Primer Vez_y', 'Primer Vez', 'oportunidad_primera_vez', 'Control_y',
     'Primer Vez_y', 'Primer Vez', 'Control_y',
     #'Control', 'oportunidad_control', 'val1', 'val2']]
@@ -329,9 +330,10 @@ dfConsulta_pivote = dfConsulta_pivote[[
 
 # Cambiar los nombres de las columnas
 dfConsulta_pivote.columns = [
-    'Responsable', 'Fecha', 'Tipo', 'Sede', 'Nieto', 'Programado', 'Reales',
-    'Asignadas','Reprogramada', 'Cancelada', 'Inatencion', 'Inasistencia', 'Primer_Vez',
-    'Control','Vinculado', 'Subsidiado', 'Contributivo', 'Otro',
+    'Responsable', 'Fecha', 'Tipo', 'Sede', 'Nieto',
+    'Programado', 'Reales', 'Asignadas','Reprogramada', 'Cancelada',
+    'Inatencion', 'Inasistencia', 'Primer_Vez', 'Control','Vinculado',
+    'Subsidiado', 'Contributivo', 'Otro',
     #'horas_inf', 'asig_primer_vez', 'dias_primer_vez', 'oportunidad_primera_vez', 'asig_control',
     'asig_primer_vez', 'dias_primer_vez', 'asig_control',
     #'dias_control', 'oportunidad_control', 'val1', 'val2']

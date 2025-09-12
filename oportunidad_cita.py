@@ -81,6 +81,35 @@ else:
     print('- Cargando oportunidad_fecha_citaBD.xlsx')
     dfOportunidad = con.query("SELECT * FROM st_read('oportunidad_fecha_citaBD.xlsx')").df()
 
+# Actualizar los nombres de las columnas segun listado de DGH
+dfFecha.columns = [
+    'Fuente de la Cita','Documento de la Cita','Fecha de Grabacion','Carnet','Identificacion del Responsable',
+    'Nombre Responsable','Concepto Facturacion','Codigo Producto (CUPS)','Especialidad','Nombre Especialidad',
+    'Fecha Cita','Hora Cita','TIPO CITA','Fecha Preferencia Paciente','Estructura Administrativa',
+    'Sede','Medico','Nombre Medico','Estado Cita','Duracion Cita',
+    'Usuario','Nombre usuario','Primer Apellido usuario','Segundo Apellido usuario','Ingreso',
+    'Primer Apellido Paciente','Segundo Apellido Paciente','Nombre Paciente','Fecha Nacimiento','Identificacion',
+    'Tipo Doc','Nacionalidad','Telefono','Sexo Paciente','Barrio',
+    'Nombre Barrio','Localidad','Nombre Localidad','Servicio Nieto','Regimen',
+    'Grupo Usuario','Tipo Asignacion']
+dfOportunidad.columns = [
+    'Documento de la Cita','Fecha de Grabacion','Identificacion del Responsable','Nombre Responsable','Especialidad',
+    'Nombre Especialidad','Fecha Cita','Hora Cita','TIPO CITA','Fecha Preferencia Paciente',
+    'Estructura Administrativa','Sede','Medico','Nombre Medico','Estado Cita',
+    'Duracion Cita','Usuario','Grupo Usuario','Ingreso','Primer Apellido Paciente',
+    'Segundo Apellido Paciente','Nombre Paciente','Fecha Nacimiento','EDAD','Identificacion',
+    'Tipo Doc','Telefono','Sexo Paciente','Servicio Nieto','Especialidad2',
+    'Tipo Valida','Tipo de Cita','Vinculacion','OPORTUNIDAD_INST','OPORTUNIDAD_USU',
+    'Codigo Producto (CUPS)','CMACODIGO']
+
+# Convertir 'Estado Cita', 'TIPO CITA', 'Tipo Asignacion', 'Vinculacion' a mayuscula cada palabra
+dfFecha['Estado Cita'] = dfFecha['Estado Cita'].str.title()
+dfFecha['TIPO CITA'] = dfFecha['TIPO CITA'].str.title()
+dfFecha['Tipo Asignacion'] = dfFecha['Tipo Asignacion'].str.title()
+dfOportunidad['Estado Cita'] = dfOportunidad['Estado Cita'].str.title()
+dfOportunidad['TIPO CITA'] = dfOportunidad['TIPO CITA'].str.title()
+dfOportunidad['Vinculacion'] = dfOportunidad['Vinculacion'].str.title()
+
 # %% Procesar datos
 print('Procesando datos...')
 # Agregar las vacias de dfFecha a dfOportunidad creando dfOportunidad_cita

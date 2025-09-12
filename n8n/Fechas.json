@@ -142,6 +142,10 @@
             {
               "name": "addDate",
               "value": "={{ $('addDate').item.json.addDate }}"
+            },
+            {
+              "name": "YearMonth",
+              "value": "={{ $('YearMonth').item.json.YearMonth }}"
             }
           ]
         },
@@ -151,10 +155,27 @@
       "name": "Dates",
       "type": "n8n-nodes-base.set",
       "position": [
-        1180,
+        1380,
         820
       ],
       "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('setAddDate').item.json.setAddDate }}",
+        "format": "=yyyyMM",
+        "outputFieldName": "YearMonth",
+        "options": {}
+      },
+      "id": "c96a564e-711e-4b02-b97d-1ca81c0fcfbb",
+      "name": "YearMonth",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        820
+      ]
     }
   ],
   "pinData": {},
@@ -229,7 +250,7 @@
       "main": [
         [
           {
-            "node": "Dates",
+            "node": "YearMonth",
             "type": "main",
             "index": 0
           }
@@ -246,13 +267,24 @@
           }
         ]
       ]
+    },
+    "YearMonth": {
+      "main": [
+        [
+          {
+            "node": "Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "84f7779e-7c4a-4ce8-9f4d-438033b80dd6",
+  "versionId": "55c047a6-7894-4311-b19c-51488bd0af21",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

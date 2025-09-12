@@ -39,7 +39,9 @@
     {
       "parameters": {
         "operation": "xlsx",
-        "options": {}
+        "options": {
+          "compression": true
+        }
       },
       "id": "6dab845e-a080-4bcb-a9eb-b4bc359ec624",
       "name": "Convert to File",
@@ -132,7 +134,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "84bb736d-590b-4397-a56f-f7c3c3ebec16",
+  "versionId": "3c9473a2-b8ba-4eab-a96e-e04284ee2d81",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

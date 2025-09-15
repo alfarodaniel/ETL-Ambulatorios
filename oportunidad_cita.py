@@ -110,6 +110,10 @@ dfOportunidad['Estado Cita'] = dfOportunidad['Estado Cita'].str.title()
 dfOportunidad['TIPO CITA'] = dfOportunidad['TIPO CITA'].str.title()
 dfOportunidad['Vinculacion'] = dfOportunidad['Vinculacion'].str.title()
 
+# Para validar - filtrar dfFecha para los que Nombre Responsable es 'ALIANZA MEDELLIN ANTIOQUIA EPSS S.A.S. SUBSIDIADO'
+#dfFecha = dfFecha[dfFecha['Nombre Responsable'] == 'ALIANZA MEDELLIN ANTIOQUIA EPSS S.A.S. SUBSIDIADO']
+#dfOportunidad = dfOportunidad[dfOportunidad['Nombre Responsable'] == 'ALIANZA MEDELLIN ANTIOQUIA EPSS S.A.S. SUBSIDIADO']
+
 # %% Procesar datos
 print('Procesando datos...')
 # Agregar las vacias de dfFecha a dfOportunidad creando dfOportunidad_cita
@@ -143,8 +147,8 @@ dfOportunidad_cita['Duracion Cita'] = dfOportunidad_cita['Duracion Cita'].dt.hou
 dfVariables.columns = ['Servicio Nieto', 'Nombre Especialidad CIP AJUST', 'nieto CIP AJUST FECHA CITA', 'TIPO 2']
 
 # Pasar a minusculas las columnas 'Servicio Nieto' para garantizar la coincidencia de los registros en el cruce
-dfOportunidad_cita['Servicio Nieto'] = dfOportunidad_cita['Servicio Nieto'].str.lower()
-dfVariables['Servicio Nieto'] = dfVariables['Servicio Nieto'].str.lower()
+dfOportunidad_cita['Servicio Nieto'] = dfOportunidad_cita['Servicio Nieto'].str.lower().str.strip()
+dfVariables['Servicio Nieto'] = dfVariables['Servicio Nieto'].str.lower().str.strip()
 
 # Agregar a dfOportunidad_cita desde dfVariables las columnas 'Nombre Especialidad CIP AJUST', 'nieto CIP AJUST FECHA CITA' y 'TIPO 2'
 dfOportunidad_cita = pd.merge(
@@ -378,14 +382,14 @@ dfOportunidad_cita['Fecha Cita'] = dfOportunidad_cita['Fecha Cita'].dt.strftime(
 dfOportunidad_cita['Fecha Nacimiento'] = dfOportunidad_cita['Fecha Nacimiento'].dt.strftime('%d/%m/%Y')
 
 # Convertir los df a xlsx
-#print('- Descargando Oportunidad_cita.xlsx')
-#con.execute("COPY (SELECT * FROM dfOportunidad_cita) TO 'Oportunidad_cita.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-#print('- Descargando FechaVacias.xlsx')
-#con.execute("COPY (SELECT * FROM dfFechaVacias) TO 'FechaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-#print('- Descargando Oportunidad_citaVacias.xlsx')
-#con.execute("COPY (SELECT * FROM dfOportunidad_citaVacias) TO 'Oportunidad_citaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
-#print('- Descargando Oportunidad_citaTipoCitaError.xlsx')
-#con.execute("COPY (SELECT * FROM dfOportunidad_citaTipoCitaError) TO 'Oportunidad_citaTipoCitaError.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+print('- Descargando Oportunidad_cita.xlsx')
+con.execute("COPY (SELECT * FROM dfOportunidad_cita) TO 'Oportunidad_cita.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+print('- Descargando FechaVacias.xlsx')
+con.execute("COPY (SELECT * FROM dfFechaVacias) TO 'FechaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+print('- Descargando Oportunidad_citaVacias.xlsx')
+con.execute("COPY (SELECT * FROM dfOportunidad_citaVacias) TO 'Oportunidad_citaVacias.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
+print('- Descargando Oportunidad_citaTipoCitaError.xlsx')
+con.execute("COPY (SELECT * FROM dfOportunidad_citaTipoCitaError) TO 'Oportunidad_citaTipoCitaError.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
 print('- Descargando Consulta_pivote.xlsx')
 con.execute("COPY (SELECT * FROM dfConsulta_pivote) TO 'Consulta_pivote.xlsx' WITH (FORMAT GDAL, DRIVER 'xlsx');")
 # %%

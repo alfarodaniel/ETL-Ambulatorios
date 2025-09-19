@@ -1,0 +1,209 @@
+{
+  "name": "Sendas",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 2
+            }
+          ]
+        }
+      },
+      "id": "35aed889-1c52-47a6-ae76-4371b1677bde",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "C:/gestion/Cuadros de control/Sendas/"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $('Procedures').item.json.fileName }}_{{ $json.startDate }}_{{ $json.endDate }}"
+            },
+            {
+              "name": "extName",
+              "value": "={{ $('Procedures').item.json.extName }}"
+            },
+            {
+              "name": "procedureName",
+              "value": "={{ $('Procedures').item.json.procedureName }}"
+            },
+            {
+              "name": "typeXLSX",
+              "value": "Yes"
+            },
+            {
+              "name": "commandName",
+              "value": "capital_sendas.exe"
+            },
+            {
+              "name": "typeMonth",
+              "value": "Yes"
+            },
+            {
+              "name": "resultName",
+              "value": "capital_sendas"
+            },
+            {
+              "name": "folderID",
+              "value": "={{ $('Procedures').item.json.folderID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8bbb5c5-2776-42ef-b59e-f2fa825cef44",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        980,
+        540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 234,
+        "width": 525.5405405405405
+      },
+      "id": "bc4b46d4-4662-43b5-82f4-a50d167eca58",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
+      },
+      "id": "17180b48-7346-42d9-8d47-30c80c7140b5",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultName": "Fechas"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "9b07c76e-a027-46c0-85e7-43495dd98fdb",
+      "name": "Execute Workflow Fechas",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RF1SwhUOyNOyWOAW",
+          "mode": "list",
+          "cachedResultName": "Procedimiento ETL con EXE"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "44c2fe56-57e5-4fef-b51b-3635cc7b6542",
+      "name": "Execute Workflow ETL con EXE",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1180,
+        540
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow ETL con EXE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procedures": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Fechas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Fechas": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "8a402ff5-4437-4f26-92af-666be04c733c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "YmDUzBUGJgmEHKHw",
+  "tags": []
+}

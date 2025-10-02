@@ -60,6 +60,20 @@
               "name": "folderID",
               "value": "={{ $('Procedures').item.json.folderID }}"
             }
+          ],
+          "number": [
+            {
+              "name": "startDay",
+              "value": "={{ $('Procedures').item.json.startDay }}"
+            },
+            {
+              "name": "endDay",
+              "value": "={{ $('Procedures').item.json.endDay }}"
+            },
+            {
+              "name": "addDay",
+              "value": "={{ $('Procedures').item.json.addDay }}"
+            }
           ]
         },
         "options": {}
@@ -199,7 +213,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "8a402ff5-4437-4f26-92af-666be04c733c",
+  "versionId": "fbe3f425-86e6-4d84-8e40-2d5e113322bf",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

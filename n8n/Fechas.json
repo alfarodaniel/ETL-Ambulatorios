@@ -163,7 +163,7 @@
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $('setAddDate').item.json.setAddDate }}",
+        "date": "={{ $('setStartDate').item.json.setStartDate }}",
         "format": "=yyyyMM",
         "outputFieldName": "yearMonth",
         "options": {}
@@ -284,7 +284,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "ac6a816b-9387-46f8-947b-4f82794bd512",
+  "versionId": "a8f3536b-040e-45d3-b808-609e7473bd89",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

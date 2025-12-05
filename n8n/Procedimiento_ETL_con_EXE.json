@@ -138,61 +138,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
-              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeMonth }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "426b300c-f0ee-4658-92c8-1d6c31af83af",
-      "name": "If typeMonth",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        580,
-        860
-      ]
-    },
-    {
-      "parameters": {
-        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
-        "options": {
-          "fileExtension": ".xlsx",
-          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.yearMonth }}.xlsx",
-          "dataPropertyName": "data"
-        }
-      },
-      "id": "113e7bdd-12d6-4d5c-accb-925174de5371",
-      "name": "Read/Write Files from Disk - yearMonth",
-      "type": "n8n-nodes-base.readWriteFile",
-      "typeVersion": 1,
-      "position": [
-        780,
-        660
-      ],
-      "executeOnce": true,
-      "alwaysOutputData": false,
-      "notesInFlow": false
-    },
-    {
-      "parameters": {
         "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
         "options": {
           "fileExtension": ".xlsx",
@@ -206,7 +151,7 @@
       "typeVersion": 1,
       "position": [
         780,
-        860
+        1060
       ],
       "executeOnce": true,
       "alwaysOutputData": false,
@@ -289,6 +234,116 @@
         160,
         660
       ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeYear }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "426b300c-f0ee-4658-92c8-1d6c31af83af",
+      "name": "If typeYear",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.Year }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "113e7bdd-12d6-4d5c-accb-925174de5371",
+      "name": "Read/Write Files from Disk - Year",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        660
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeMonth }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d8ab199a-21c6-49de-8145-cdda8555a79c",
+      "name": "If typeMonth",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.yearMonth }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "aecdcb99-a5fd-469f-ba62-b37cec8dd446",
+      "name": "Read/Write Files from Disk - yearMonth",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        860
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
     }
   ],
   "pinData": {},
@@ -319,7 +374,7 @@
       "main": [
         [
           {
-            "node": "If typeMonth",
+            "node": "If typeYear",
             "type": "main",
             "index": 0
           }
@@ -331,35 +386,6 @@
         [
           {
             "node": "Names",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If typeMonth": {
-      "main": [
-        [
-          {
-            "node": "Read/Write Files from Disk - yearMonth",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Read/Write Files from Disk - Days",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Read/Write Files from Disk - yearMonth": {
-      "main": [
-        [
-          {
-            "node": "Microsoft OneDrive",
             "type": "main",
             "index": 0
           }
@@ -416,13 +442,73 @@
           }
         ]
       ]
+    },
+    "If typeYear": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk - Year",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If typeMonth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk - Year": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If typeMonth": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk - yearMonth",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read/Write Files from Disk - Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk - yearMonth": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "b40c2d9b-d2c4-4b29-aa85-15d5092aabe0",
+  "versionId": "775d25c0-5d11-4a75-b42c-f4c0eff90724",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

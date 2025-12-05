@@ -104,7 +104,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX_SENDAS\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
       },
       "id": "17180b48-7346-42d9-8d47-30c80c7140b5",
       "name": "Procedures",
@@ -213,7 +213,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "fbe3f425-86e6-4d84-8e40-2d5e113322bf",
+  "versionId": "ba987591-f804-49cd-821e-ea770b639759",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

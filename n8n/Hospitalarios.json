@@ -59,7 +59,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS_DE_HOSPITALIZACION\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAJI3WBOU67OJBA3K2O5W42P3L77\"} },\n    { json: { procedureName: \"PACIENTES_HOSPITALIZADOS_CON_EGRESO\",\n              fileName: \"egresos\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLALF5EEHWWK7Y5BIBMZ2JZ7QHXLW\"} },\n    { json: { procedureName: \"REINGRESOS_HOSPITALARIOS\",\n              fileName: \"reingresos\",\n              extName: \".xlsx\",\n              startDay: -15,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP5QHQEX3UA65HJ5OQK63Y5YIJ4\"} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS_DE_HOSPITALIZACION\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAJI3WBOU67OJBA3K2O5W42P3L77\"} },\n    { json: { procedureName: \"EGRESO HOSPITALARIO POR SERVICIO\",\n              fileName: \"egresos\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLALF5EEHWWK7Y5BIBMZ2JZ7QHXLW\"} },\n    { json: { procedureName: \"REINGRESOS_HOSPITALARIOS\",\n              fileName: \"reingresos\",\n              extName: \".xlsx\",\n              startDay: -15,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP5QHQEX3UA65HJ5OQK63Y5YIJ4\"} }\n];"
       },
       "id": "cbf7d838-a998-45ad-b6f0-83cc562b3a20",
       "name": "Procedures",
@@ -131,9 +131,11 @@
   },
   "active": true,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "2137e7c9-681b-4bd2-914e-9e3ca75ba011",
+  "versionId": "4dc94dab-591d-4def-845a-28e867701dd7",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

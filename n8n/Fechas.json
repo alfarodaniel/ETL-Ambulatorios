@@ -144,8 +144,16 @@
               "value": "={{ $('addDate').item.json.addDate }}"
             },
             {
-              "name": "YearMonth",
-              "value": "={{ $('yearMonth').item.json.YearMonth }}"
+              "name": "yearMonth",
+              "value": "={{ $('yearMonth').item.json.yearMonth }}"
+            },
+            {
+              "name": "Year",
+              "value": "={{ $('Year').item.json.Year }}"
+            },
+            {
+              "name": "yearDays",
+              "value": "={{ $json.yearDays }}"
             }
           ]
         },
@@ -155,8 +163,8 @@
       "name": "Dates",
       "type": "n8n-nodes-base.set",
       "position": [
-        1380,
-        820
+        1180,
+        1000
       ],
       "typeVersion": 1
     },
@@ -173,8 +181,39 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        1180,
-        820
+        580,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Para procesar UN item\nconst fecha1 = new Date($('Year').first().json.Year + '-01-01');\nconst fecha2 = new Date($('Today').first().json.currentDate);\n\nconst yearDays = Math.floor((fecha2 - fecha1) / (1000 * 60 * 60 * 24));\n\nreturn {\n  json: {\n    yearDays: yearDays\n  }\n};"
+      },
+      "id": "44fe8391-b20b-484b-abf4-22528a0a8f0c",
+      "name": "yearDays",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('setStartDate').item.json.setStartDate }}",
+        "format": "=yyyy",
+        "outputFieldName": "Year",
+        "options": {}
+      },
+      "id": "ab60b28e-ab1f-431e-987d-e807eac7077e",
+      "name": "Year",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        780,
+        1000
       ]
     }
   ],
@@ -272,7 +311,29 @@
       "main": [
         [
           {
+            "node": "Year",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "yearDays": {
+      "main": [
+        [
+          {
             "node": "Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Year": {
+      "main": [
+        [
+          {
+            "node": "yearDays",
             "type": "main",
             "index": 0
           }
@@ -282,9 +343,11 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "a8f3536b-040e-45d3-b808-609e7473bd89",
+  "versionId": "e1214a92-c788-4f9f-b182-b3c4243c411b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

@@ -5,7 +5,7 @@
       "parameters": {
         "content": "## Guardar el resultado a XLSX",
         "height": 242,
-        "width": 399
+        "width": 541
       },
       "id": "ba904d14-dfc0-4ecb-8795-a382a458976d",
       "name": "Sticky Note",
@@ -48,7 +48,7 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        1140,
+        1340,
         440
       ]
     },
@@ -63,7 +63,7 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        1340,
+        1540,
         440
       ]
     },
@@ -132,9 +132,11 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "3c9473a2-b8ba-4eab-a96e-e04284ee2d81",
+  "versionId": "3bf75acf-5e5d-4786-a14b-57f5761cee65",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

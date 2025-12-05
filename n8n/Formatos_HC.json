@@ -1,0 +1,149 @@
+{
+  "name": "Formatos HC",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 2,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "id": "0087f119-1077-4613-baf9-7e8487d6511f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "C:/gestion/Cuadros de control/FormatosHC/"
+            },
+            {
+              "name": "folderID",
+              "value": "014SRZLANOSQRIUVEXOVDL4VNOEG3D7X4M"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "17cc9af2-207c-40e1-97dd-2a3c9bee80f0",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        760,
+        540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 201,
+        "width": 311.5405405405405
+      },
+      "id": "65d5039b-d17a-4838-b1c6-0497256028c3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"SP_USABILIDAD_HC\", \n              fileName: \"usabilidad_hc\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} },\n    { json: { procedureName: \"SP_USABILIDAD_REG\",\n              fileName: \"usabilidad_reg\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1} }\n];"
+      },
+      "id": "900a83fb-09b3-4e82-b608-7f7900efc6fe",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "zHVOCIcKp1yNh0KU",
+          "mode": "list",
+          "cachedResultName": "Procedimiento ETL"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "a81a4854-ebc4-4055-a2ad-89b9178ed50b",
+      "name": "Execute Workflow ETL",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        540
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procedures": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "58aa263b-7a67-4585-9eb5-3aa547e4bfa4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "CGm38YoY3rFyCSg4",
+  "tags": []
+}

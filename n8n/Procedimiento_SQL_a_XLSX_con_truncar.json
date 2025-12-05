@@ -1,0 +1,170 @@
+{
+  "name": "Procedimiento SQL a XLSX con truncar",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Guardar el resultado a XLSX",
+        "height": 242,
+        "width": 541
+      },
+      "id": "18cfa211-37c9-4e81-b7a0-8965c69260b3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        380
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [{{ $('Execute Workflow Trigger').item.json.procedureName }}] '{{ $('Execute Workflow Trigger').item.json.startDate }}','{{ $('Execute Workflow Trigger').item.json.addDate }}'"
+      },
+      "id": "298dc58d-273f-490b-a783-df75d0127042",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        440
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "xRzG7R1O7BzKwMxp",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {
+          "compression": true
+        }
+      },
+      "id": "405f4f6e-d89b-42e7-aa6f-83abc636e431",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1340,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.fileName }}{{ $('Execute Workflow Trigger').item.json.extName }}",
+        "options": {}
+      },
+      "id": "0c5980bf-1e6d-4e19-b8a1-27d220d8e300",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Ejecutar el procedimiento",
+        "height": 242,
+        "width": 341
+      },
+      "id": "03ec6eda-b4b4-4327-b2fd-6ae5af430ea2",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        380
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "8a216d8e-7a9e-477b-ad9c-702b60f8b8f9",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        760,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// En un nodo Code (JavaScript)\nfor (const item of $input.all()) {\n  for (const key in item.json) {\n    if (typeof item.json[key] === 'string' && item.json[key].length > 32767) {\n      item.json[key] = item.json[key].substring(0, 32764) + '...';\n    }\n  }\n}\n\nreturn $input.all();"
+      },
+      "id": "2355804c-46ee-4368-802e-987ecb8b50e6",
+      "name": "Code truncar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        440
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Code truncar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code truncar": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "9f5de8d3-c2ad-4aff-a58f-3050e54d4db0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "0GZC2HmaN6HG4RmY",
+  "tags": []
+}

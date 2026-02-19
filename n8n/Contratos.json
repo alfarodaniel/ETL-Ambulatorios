@@ -1,0 +1,233 @@
+{
+  "name": "Contratos",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 3,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "id": "af48bdbc-b98c-497b-92e2-7044f1e75f1d",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "C:/gestion/Cuadros de control/Contratos/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5a377d0e-f8f7-4fdd-852b-1aa4c7311a08",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        760,
+        540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 201,
+        "width": 319.5405405405405
+      },
+      "id": "39cda131-0b3e-400e-9e18-e8e484668e48",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"SP_PS_OBLIGACIONES_CON_COMPROMISOS_Y_DISPONIBILIDADES\", \n              fileName: \"obligaciones\",\n              extName: \".xlsx\",\n              Year: 2026,\n              folderID: \"014SRZLAMIILWVL56EJ5DZRFOFFMFR2JVT\"} }\n];"
+      },
+      "id": "ec3a79c9-0004-4cbf-b312-f62f7d5aab8f",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [{{ $json.procedureName }}] '{{ $json.Year }}'"
+      },
+      "id": "3b4ad67a-4a60-4b56-84ad-c32e54b6d504",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        600,
+        780
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "xRzG7R1O7BzKwMxp",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {
+          "compression": true,
+          "fileName": "={{ $('Names').item.json.fileName }}_{{ $('Names').item.json.Year }}{{ $('Names').item.json.extName }}"
+        }
+      },
+      "id": "29d912fd-dfe6-4e7a-8416-f76fc74abd73",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "=",
+        "parentId": "={{ $('Names').item.json.folderID }}",
+        "binaryData": true
+      },
+      "id": "e6b27274-0708-445d-b1a9-a3ac4d24040b",
+      "name": "Microsoft OneDrive",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        920,
+        780
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Consulta",
+        "height": 201,
+        "width": 153.54054054054052
+      },
+      "id": "a8983ec1-f588-4633-8a47-899371b900e1",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Cargue",
+        "height": 201,
+        "width": 320.5405405405405
+      },
+      "id": "310a71d6-cccc-4eeb-998d-afc7f6542789",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        740,
+        740
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procedures": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "62b69cc3-2305-49a8-8365-c292efe7d519",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "QMdqeJiNO6Nqzpny",
+  "tags": []
+}

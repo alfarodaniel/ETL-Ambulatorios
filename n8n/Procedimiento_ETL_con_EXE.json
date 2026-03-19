@@ -5,14 +5,14 @@
       "parameters": {
         "content": "## Variables",
         "height": 217.0756044906389,
-        "width": 578.8721112077363
+        "width": 947.3180571536824
       },
       "id": "8b7872aa-dc87-4c97-be1a-a87882b9aa52",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        320,
+        148.2432432432431,
         420
       ]
     },
@@ -47,7 +47,7 @@
       "type": "n8n-nodes-base.microsoftOneDrive",
       "typeVersion": 1,
       "position": [
-        980,
+        1220,
         460
       ],
       "credentials": {
@@ -86,7 +86,7 @@
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        760,
+        980,
         460
       ],
       "typeVersion": 1
@@ -98,7 +98,7 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
       "position": [
-        380,
+        180,
         460
       ]
     },
@@ -132,7 +132,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.1,
       "position": [
-        580,
+        380,
         460
       ]
     },
@@ -231,7 +231,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        160,
+        180,
         660
       ]
     },
@@ -344,6 +344,69 @@
       "executeOnce": true,
       "alwaysOutputData": false,
       "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.Monthly }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "57382dec-ecb9-4e51-8f35-0c3fca77fd0b",
+      "name": "If Monthly",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "startDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.startMonthly }}"
+            },
+            {
+              "name": "endDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.endMonthly }}"
+            },
+            {
+              "name": "addDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.addMonthly }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "be135398-897a-4dc0-b71c-6ee5095fcfae",
+      "name": "Names0",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        780,
+        460
+      ],
+      "typeVersion": 1
     }
   ],
   "pinData": {},
@@ -385,7 +448,7 @@
       "main": [
         [
           {
-            "node": "Names",
+            "node": "If Monthly",
             "type": "main",
             "index": 0
           }
@@ -500,6 +563,35 @@
           }
         ]
       ]
+    },
+    "If Monthly": {
+      "main": [
+        [
+          {
+            "node": "Names0",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names0": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -508,7 +600,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "775d25c0-5d11-4a75-b42c-f4c0eff90724",
+  "versionId": "fda1a08b-07e9-4f58-b01e-85eda9c7581e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

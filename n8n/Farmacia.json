@@ -1,0 +1,177 @@
+{
+  "name": "Farmacia",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 3
+            }
+          ]
+        }
+      },
+      "id": "17d34d3c-0a2c-4be1-b951-3de25299705b",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "C:/gestion/Cuadros de control/Farmacia/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fd7d3b46-c2d5-4258-a4cc-96579aa0f9f1",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        760,
+        540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 201,
+        "width": 319.5405405405405
+      },
+      "id": "aeecec77-a0b2-446f-a414-c17f0ad525a6",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"SP_HC_CONSUMO\", \n              fileName: \"consumo\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              Monthly: \"Yes\",\n              folderID: \"014SRZLAPQ6V5N774Y4BF3KKICA4ZSANSK\"} }\n];"
+      },
+      "id": "161692ce-6ba5-41bf-a71f-4a7da1cf2de5",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "zHVOCIcKp1yNh0KU",
+          "mode": "list",
+          "cachedResultName": "Procedimiento ETL"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "5a23f194-4f5f-42b3-a633-c76525ecaaf9",
+      "name": "Execute Workflow ETL",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5MalLPsXiAVuZzZn",
+          "mode": "list",
+          "cachedResultName": "Farmacia Inventario"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d26fad5f-c88d-4f34-9236-903c0cb68da2",
+      "name": "Execute Workflow Farmacia Inventario",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1140,
+        540
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procedures": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow ETL": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Farmacia Inventario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "83323eef-2027-4aed-b90b-4325fd412485",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "XaoAA6btWCqwDVK6",
+  "tags": []
+}

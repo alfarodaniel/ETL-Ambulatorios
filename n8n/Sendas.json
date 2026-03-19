@@ -30,7 +30,7 @@
             },
             {
               "name": "fileName",
-              "value": "={{ $('Procedures').item.json.fileName }}_{{ $json.startDate }}_{{ $json.endDate }}"
+              "value": "={{ $('Procedures').item.json.fileName }}_{{ $json.startMonthly }}_{{ $json.endMonthly }}"
             },
             {
               "name": "extName",
@@ -59,6 +59,10 @@
             {
               "name": "folderID",
               "value": "={{ $('Procedures').item.json.folderID }}"
+            },
+            {
+              "name": "Monthly",
+              "value": "={{ $('Procedures').item.json.Monthly }}"
             }
           ],
           "number": [
@@ -91,7 +95,7 @@
       "parameters": {
         "content": "## Variables",
         "height": 234,
-        "width": 525.5405405405405
+        "width": 541.5405405405405
       },
       "id": "bc4b46d4-4662-43b5-82f4-a50d167eca58",
       "name": "Sticky Note",
@@ -104,7 +108,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX_SENDAS\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX_SENDAS\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,             \n              Monthly: \"Yes\",\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
       },
       "id": "17180b48-7346-42d9-8d47-30c80c7140b5",
       "name": "Procedures",
@@ -213,7 +217,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "ba987591-f804-49cd-821e-ea770b639759",
+  "versionId": "d36f88d7-0562-429f-90e8-44b54cb9f392",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

@@ -5,7 +5,7 @@
       "parameters": {
         "content": "## Variables",
         "height": 217.0756044906389,
-        "width": 578.8721112077363
+        "width": 929.8721112077363
       },
       "id": "1a71e00d-c2f8-49d9-9e20-4f8e01a70909",
       "name": "Sticky Note",
@@ -90,8 +90,8 @@
       "type": "n8n-nodes-base.microsoftOneDrive",
       "typeVersion": 1,
       "position": [
-        980,
-        460
+        960,
+        660
       ],
       "credentials": {
         "microsoftOneDriveOAuth2Api": {
@@ -129,7 +129,7 @@
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        760,
+        1140,
         460
       ],
       "typeVersion": 1
@@ -163,6 +163,69 @@
       "typeVersion": 1.1,
       "position": [
         580,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "startDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.startMonthly }}"
+            },
+            {
+              "name": "endDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.endMonthly }}"
+            },
+            {
+              "name": "addDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.addMonthly }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8d25b7c5-345f-4b08-9c38-b09386887977",
+      "name": "Names0",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        960,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.Monthly }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4d426d42-5a6f-41e4-aab4-83a105e9f3c5",
+      "name": "If Monthly",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        760,
         460
       ]
     }
@@ -217,6 +280,35 @@
       "main": [
         [
           {
+            "node": "If Monthly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names0": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Monthly": {
+      "main": [
+        [
+          {
+            "node": "Names0",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "Names",
             "type": "main",
             "index": 0
@@ -227,9 +319,11 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "72ef9345-5e80-4e64-a6a6-c77473fc810d",
+  "versionId": "a19b6418-5214-4b2d-b5c1-75532f128672",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

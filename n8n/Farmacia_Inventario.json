@@ -1,5 +1,5 @@
 {
-  "name": "Contratos",
+  "name": "Farmacia Inventario",
   "nodes": [
     {
       "parameters": {
@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "af48bdbc-b98c-497b-92e2-7044f1e75f1d",
+      "id": "43e98c2c-7a04-4a0c-8e21-3373e68a645b",
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -33,11 +33,11 @@
         },
         "options": {}
       },
-      "id": "5a377d0e-f8f7-4fdd-852b-1aa4c7311a08",
+      "id": "d56fe800-6fac-4d49-87d8-a95d485b42b9",
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        780,
+        760,
         540
       ],
       "typeVersion": 1
@@ -46,9 +46,9 @@
       "parameters": {
         "content": "## Variables",
         "height": 201,
-        "width": 329.5405405405405
+        "width": 319.5405405405405
       },
-      "id": "39cda131-0b3e-400e-9e18-e8e484668e48",
+      "id": "6252a476-16b3-429d-9b0a-4677378ea208",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -59,9 +59,9 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"SP_PS_OBLIGACIONES_CON_COMPROMISOS_Y_DISPONIBILIDADES\", \n              fileName: \"obligaciones\",\n              extName: \".xlsx\",\n              Year: 2026,\n              folderID: \"014SRZLAMIILWVL56EJ5DZRFOFFMFR2JVT\"} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"SP_IN_InventarioDiario\", \n              fileName: \"inventario\",\n              extName: \".xlsx\",\n              Year: 2026,\n              folderID: \"014SRZLAPQ6V5N774Y4BF3KKICA4ZSANSK\"} }\n];"
       },
-      "id": "ec3a79c9-0004-4cbf-b312-f62f7d5aab8f",
+      "id": "90ab3cbe-eaf0-48b0-9d5b-9923bb35f145",
       "name": "Procedures",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -73,16 +73,17 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "EXEC [{{ $json.procedureName }}] '{{ $json.Year }}'"
+        "query": "EXEC [{{ $json.procedureName }}]"
       },
-      "id": "3b4ad67a-4a60-4b56-84ad-c32e54b6d504",
+      "id": "52997728-11df-479f-8f56-333220d5e8ad",
       "name": "Microsoft SQL",
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
       "position": [
-        580,
+        600,
         780
       ],
+      "executeOnce": false,
       "credentials": {
         "microsoftSql": {
           "id": "xRzG7R1O7BzKwMxp",
@@ -95,15 +96,15 @@
         "operation": "xlsx",
         "options": {
           "compression": true,
-          "fileName": "={{ $('Names').item.json.fileName }}_{{ $('Names').item.json.Year }}{{ $('Names').item.json.extName }}"
+          "fileName": "={{ $('Names').item.json.fileName }}{{ $('Names').item.json.extName }}"
         }
       },
-      "id": "29d912fd-dfe6-4e7a-8416-f76fc74abd73",
+      "id": "b92223da-56bb-4c0d-bd6a-06df8c23edf8",
       "name": "Convert to File",
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        980,
+        760,
         780
       ]
     },
@@ -113,12 +114,12 @@
         "parentId": "={{ $('Names').item.json.folderID }}",
         "binaryData": true
       },
-      "id": "e6b27274-0708-445d-b1a9-a3ac4d24040b",
+      "id": "c9d99f6f-08df-4697-9fa4-74711e8f22c7",
       "name": "Microsoft OneDrive",
       "type": "n8n-nodes-base.microsoftOneDrive",
       "typeVersion": 1,
       "position": [
-        1180,
+        920,
         780
       ],
       "credentials": {
@@ -132,9 +133,9 @@
       "parameters": {
         "content": "## Consulta",
         "height": 201,
-        "width": 328.5405405405405
+        "width": 153.54054054054052
       },
-      "id": "a8983ec1-f588-4633-8a47-899371b900e1",
+      "id": "94689a34-82f0-407e-b801-e5eeda4bcd41",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -147,29 +148,38 @@
       "parameters": {
         "content": "## Cargue",
         "height": 201,
-        "width": 348.5405405405405
+        "width": 320.5405405405405
       },
-      "id": "310a71d6-cccc-4eeb-998d-afc7f6542789",
+      "id": "4f947e9f-101a-498d-8b94-eccc2976e209",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        961,
+        740,
         740
       ]
     },
     {
       "parameters": {
-        "jsCode": "// Código para el nodo \"Code\"\n// Convertir en texto\n\nreturn items;"
+        "resource": "folder",
+        "operation": "search",
+        "query": "Cuadro_consulta_farmacia"
       },
-      "id": "c6fc2e1e-28c6-47d4-a976-2bd5f66a8bd9",
-      "name": "Text",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "id": "cb8f232e-5b0b-45e2-aef2-dbcf0ff3f969",
+      "name": "Microsoft OneDrive1",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
       "position": [
-        780,
-        780
-      ]
+        980,
+        500
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      },
+      "disabled": true
     }
   ],
   "pinData": {},
@@ -211,7 +221,7 @@
       "main": [
         [
           {
-            "node": "Text",
+            "node": "Convert to File",
             "type": "main",
             "index": 0
           }
@@ -228,30 +238,19 @@
           }
         ]
       ]
-    },
-    "Text": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "3d28af09-7913-449f-83eb-c92ee6e60552",
+  "versionId": "2f28b5d1-32f5-4406-a66c-e10a79db83e8",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
   },
-  "id": "QMdqeJiNO6Nqzpny",
+  "id": "5MalLPsXiAVuZzZn",
   "tags": []
 }

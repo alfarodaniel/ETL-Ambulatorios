@@ -154,6 +154,18 @@
             {
               "name": "yearDays",
               "value": "={{ $json.yearDays }}"
+            },
+            {
+              "name": "startMonthly",
+              "value": "={{ $('startMonthly').item.json.startMonthly }}"
+            },
+            {
+              "name": "endMonthly",
+              "value": "={{ $('endMonthly').item.json.endMonthly }}"
+            },
+            {
+              "name": "addMonthly",
+              "value": "={{ $('addMonthly').item.json.addMonthly }}"
             }
           ]
         },
@@ -215,6 +227,57 @@
         780,
         1000
       ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ new Date(new Date($('setStartDate').item.json.setStartDate).getFullYear(), new Date($('setStartDate').item.json.setStartDate).getMonth(), 1) }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "startMonthly",
+        "options": {}
+      },
+      "id": "79ad83be-febe-476f-9034-9a935def8a16",
+      "name": "startMonthly",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ new Date(new Date($('setEndDate').item.json.setEndDate).getFullYear(), new Date($('setEndDate').item.json.setEndDate).getMonth() + 1, 0) }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "endMonthly",
+        "options": {}
+      },
+      "id": "5f2a173c-63b5-4794-8ba2-7b86b0578933",
+      "name": "endMonthly",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ new Date(new Date($('setEndDate').item.json.setEndDate).getFullYear(), new Date($('setEndDate').item.json.setEndDate).getMonth() + 1, 1) }}",
+        "format": "=yyyyMMdd",
+        "outputFieldName": "addMonthly",
+        "options": {}
+      },
+      "id": "7f0e34f9-d62d-4f30-b3e4-9b284bee0aed",
+      "name": "addMonthly",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        820
+      ]
     }
   ],
   "pinData": {},
@@ -245,7 +308,7 @@
       "main": [
         [
           {
-            "node": "setEndDate",
+            "node": "startMonthly",
             "type": "main",
             "index": 0
           }
@@ -267,7 +330,7 @@
       "main": [
         [
           {
-            "node": "setAddDate",
+            "node": "endMonthly",
             "type": "main",
             "index": 0
           }
@@ -289,7 +352,7 @@
       "main": [
         [
           {
-            "node": "yearMonth",
+            "node": "addMonthly",
             "type": "main",
             "index": 0
           }
@@ -339,6 +402,39 @@
           }
         ]
       ]
+    },
+    "startMonthly": {
+      "main": [
+        [
+          {
+            "node": "setEndDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "endMonthly": {
+      "main": [
+        [
+          {
+            "node": "setAddDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "addMonthly": {
+      "main": [
+        [
+          {
+            "node": "yearMonth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -347,7 +443,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "e1214a92-c788-4f9f-b182-b3c4243c411b",
+  "versionId": "122c892a-7338-463a-b318-f59137b48f1e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

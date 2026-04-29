@@ -20,9 +20,9 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "ImahTPb1ZL8BNMGb",
+          "value": "0GZC2HmaN6HG4RmY",
           "mode": "list",
-          "cachedResultName": "Procedimiento SQL a XLSX"
+          "cachedResultName": "Procedimiento SQL a XLSX con truncar"
         },
         "mode": "each",
         "options": {
@@ -323,7 +323,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "a19b6418-5214-4b2d-b5c1-75532f128672",
+  "versionId": "bc9f95ec-7e7e-4f95-9f52-3c40327cd073",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

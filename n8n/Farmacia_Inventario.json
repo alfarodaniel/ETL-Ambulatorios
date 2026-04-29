@@ -3,26 +3,6 @@
   "nodes": [
     {
       "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "triggerAtHour": 3,
-              "triggerAtMinute": 30
-            }
-          ]
-        }
-      },
-      "id": "43e98c2c-7a04-4a0c-8e21-3373e68a645b",
-      "name": "Schedule Trigger",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        380,
-        540
-      ]
-    },
-    {
-      "parameters": {
         "values": {
           "string": [
             {
@@ -180,21 +160,21 @@
         }
       },
       "disabled": true
+    },
+    {
+      "parameters": {},
+      "id": "50595dd5-ea90-4e83-81ce-21408c327ed5",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        540
+      ]
     }
   ],
   "pinData": {},
   "connections": {
-    "Schedule Trigger": {
-      "main": [
-        [
-          {
-            "node": "Procedures",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Names": {
       "main": [
         [
@@ -238,6 +218,17 @@
           }
         ]
       ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -246,7 +237,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "2f28b5d1-32f5-4406-a66c-e10a79db83e8",
+  "versionId": "158e677c-5a41-430c-8cda-33340777b054",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

@@ -1,0 +1,145 @@
+{
+  "name": "Urgencias",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 1,
+              "triggerAtMinute": 20
+            }
+          ]
+        }
+      },
+      "id": "136146a5-d40b-4a66-bb92-28a8382ff4d9",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "C:/gestion/Cuadros de control/Urgencias/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9037e0c9-ef0b-4d24-b5ec-132fefc12bcf",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        760,
+        540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 201,
+        "width": 319.5405405405405
+      },
+      "id": "e47789ad-03fd-40d5-8964-496506e022b8",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { procedureName: \"INTERCONSULTAS DE URGENCIAS\", \n              fileName: \"interconsultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              Monthly: \"Yes\",\n              folderID: \"014SRZLANK64EZF4AV7VBYU6XKDF34RZSH\"} },\n    { json: { procedureName: \"FACTURACION CONSULTAS URGENTES DX EGRESO\",\n              fileName: \"consultas\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,\n              Monthly: \"Yes\",\n              folderID: \"014SRZLAMR45S2TT65OFEKBCJZ657ADNXJ\"} }\n];"
+      },
+      "id": "45593025-b650-428f-a8c3-b8e85d4ea89b",
+      "name": "Procedures",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "zHVOCIcKp1yNh0KU",
+          "mode": "list",
+          "cachedResultName": "Procedimiento ETL"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "66fb0565-9d85-41d7-a89b-603dc36700d1",
+      "name": "Execute Workflow ETL",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        540
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Procedures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procedures": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d7cec6b7-cd24-42f5-b15c-7e560298cb97",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "2MK6vFiFA50pNW1F",
+  "tags": []
+}

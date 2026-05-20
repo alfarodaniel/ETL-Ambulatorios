@@ -1,0 +1,236 @@
+{
+  "name": "OCS",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 4
+            }
+          ]
+        }
+      },
+      "id": "c06a614f-54a6-41c4-94cb-ede0b0248139",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Consulta",
+        "height": 201,
+        "width": 319.5405405405405
+      },
+      "id": "ee9b3f5a-542c-4ef8-930a-fb23e39281ed",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "={{ $json.table }}",
+          "mode": "name"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "9bd9f41a-cd24-4e66-9b39-7349c3a57808",
+      "name": "MySQL",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        1060,
+        540
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "XZiNF3Q2ApWqJ4Gv",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "1a775bd0-a9af-4494-8c99-5bc5879e6671",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        780,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { table: \"hardware\",\n              extName: \".xlsx\",\n              folderID: \"014SRZLAKQX3ZUKC4GLJE3QXWT5CZZ6OPK\"} },\n    { json: { table: \"software\",\n              extName: \".xlsx\",\n              folderID: \"014SRZLAKQX3ZUKC4GLJE3QXWT5CZZ6OPK\"} },\n    { json: { table: \"software_name\",\n              extName: \".xlsx\",\n              folderID: \"014SRZLAKQX3ZUKC4GLJE3QXWT5CZZ6OPK\"} }\n];"
+      },
+      "id": "0b82b393-5448-4783-8b74-56c7fda67d1a",
+      "name": "Tables",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "search",
+        "query": "OCS"
+      },
+      "id": "9490f197-9868-4082-bb61-c2e92c682a0f",
+      "name": "Microsoft OneDrive1",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        420,
+        800
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {
+          "compression": true,
+          "fileName": "={{ $('Loop Over Items').item.json.table }}{{ $('Loop Over Items').item.json.extName }}"
+        }
+      },
+      "id": "fc33b7fb-7fba-4728-8d50-4861c21f9628",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "={{ $('Loop Over Items').item.json.table }}{{ $('Loop Over Items').item.json.extName }}",
+        "parentId": "={{ $('Loop Over Items').item.json.folderID }}",
+        "binaryData": true
+      },
+      "id": "d359c194-395f-4869-aaf8-2c1e681aef1f",
+      "name": "Microsoft OneDrive",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        740
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Tables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "MySQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tables": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft OneDrive": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "14152dc9-7801-4f22-b1b0-7d6d43690c22",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "RCy4NBxZHAlN0tma",
+  "tags": []
+}

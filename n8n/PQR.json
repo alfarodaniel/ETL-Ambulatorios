@@ -1,0 +1,253 @@
+{
+  "name": "PQR",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "encoding": "utf-8",
+          "readAsString": true
+        }
+      },
+      "id": "e7193fc8-9fd4-4c25-baca-0b43b04180e1",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "data1",
+        "options": {
+          "fileName": "={{ $('Microsoft OneDrive Trigger').item.json.name }}"
+        }
+      },
+      "id": "6fc55caa-4704-4239-a3f9-d37fbff7e4b7",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2192,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "Número petición"
+            },
+            {
+              "fieldName": "Fecha asignación",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc82cfe9-b197-4a20-877f-cc7f492ad663",
+      "name": "Sort",
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "['Número petición']",
+        "options": {}
+      },
+      "id": "74d0174c-5cb7-4c57-8745-31510be75b99",
+      "name": "Remove Duplicates",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        1952,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "watchFolder": true,
+        "folderId": {
+          "__rl": true,
+          "value": "014SRZLALCB34XY3XC7ND3Y4TMVVUUEDEA",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "0bf6b345-55ff-4a6c-b6ea-d1154fb28586",
+      "name": "Microsoft OneDrive Trigger",
+      "type": "n8n-nodes-base.microsoftOneDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        352
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "search",
+        "query": "procesados"
+      },
+      "id": "5e4f2dd1-d72f-46a4-beb2-c5e690999061",
+      "name": "Microsoft OneDrive1",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        608
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": "={{ $('Microsoft OneDrive Trigger').item.json.id }}"
+      },
+      "id": "09d4a757-6833-4c9d-8013-56c57cc92da2",
+      "name": "Microsoft OneDrive - download",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        352
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "parentId": "014SRZLALCB34XY3XC7ND3Y4TMVVUUEDEA",
+        "binaryData": true,
+        "binaryPropertyName": "data1"
+      },
+      "id": "449540ec-c7ed-45eb-be2a-d027747943c9",
+      "name": "Microsoft OneDrive - upload",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        352
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive - upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft OneDrive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive - download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft OneDrive - download": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "aae7fef7-334e-48e4-9fa7-bf13c9b777b6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "LBiwua0VGChskLMA",
+  "tags": []
+}

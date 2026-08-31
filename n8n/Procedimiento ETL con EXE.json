@@ -1,0 +1,609 @@
+{
+  "name": "Procedimiento ETL con EXE",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 217.0756044906389,
+        "width": 947.3180571536824
+      },
+      "id": "129a7056-3c75-4134-b27a-8f3c11f24c97",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        464,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "parentId": "={{ $('Execute Workflow Trigger').item.json.folderID }}",
+        "binaryData": true
+      },
+      "id": "082f6bd8-96ce-4167-b358-b4ee4308baf3",
+      "name": "Microsoft OneDrive",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        704
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "search",
+        "query": "dashboard"
+      },
+      "id": "63ee0fd8-b28b-48ef-9671-ef088764376a",
+      "name": "Microsoft OneDrive1",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1536,
+        512
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "folderName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.folderName }}"
+            },
+            {
+              "name": "procedureName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.procedureName }}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.fileName }}"
+            },
+            {
+              "name": "extName",
+              "value": "={{ $('Execute Workflow Trigger').item.json.extName }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a319dc0c-6b01-4988-99db-0ff5f4f1803d",
+      "name": "Names",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1296,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "93f29ba6-94fd-4dba-b771-aea3d3ef3db1",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        496,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $('Execute Workflow Trigger').item.json.folderName }} && {{ $('Execute Workflow Trigger').item.json.commandName }}"
+      },
+      "id": "86c035f0-acfa-409a-a175-2f70f9006cb8",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        896,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultName": "Fechas"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "313c48a8-5782-4eeb-a328-25c5a90eeacd",
+      "name": "Execute Workflow Dates",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.startDate }}_{{ $('Names').item.json.endDate }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "5f41c930-f294-4c6c-9a01-401f14387900",
+      "name": "Read/Write Files from Disk - Days",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        1104
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "N2MT5B1JZew9qtME",
+          "mode": "list",
+          "cachedResultName": "Procedimiento SQL a CSV"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d22601c9-16ec-4b89-b7fd-bc070eed4511",
+      "name": "Execute Workflow Download - CSV",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0GZC2HmaN6HG4RmY",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/0GZC2HmaN6HG4RmY",
+          "cachedResultName": "Procedimiento SQL a XLSX con truncar"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "b571558f-ad7c-4c95-aa6e-656b6735c734",
+      "name": "Execute Workflow Download - XLSX",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeXLSX }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7ad2f4be-d9c6-49d5-b6c2-eacc0b3676de",
+      "name": "If typeXLSX",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeYear }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0205cf71-2c2f-4349-a97b-76d215be7e98",
+      "name": "If typeYear",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.Year }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "673a0c4a-854f-4fca-b1a7-8c4d3fc64ab3",
+      "name": "Read/Write Files from Disk - Year",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        704
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.typeMonth }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f2e0c075-e1f3-4746-bb34-eeed0340edb5",
+      "name": "If typeMonth",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Execute Workflow Trigger').item.json.folderName }}{{ $('Execute Workflow Trigger').item.json.resultName }}.xlsx",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Execute Workflow Trigger').item.json.resultName }}_{{ $('Names').item.json.yearMonth }}.xlsx",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "ca216cfe-47d5-4313-b556-8be883a9a9a1",
+      "name": "Read/Write Files from Disk - yearMonth",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        912
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.Monthly }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "990d608e-d0e8-4ec8-aa0b-a688bc63d96f",
+      "name": "If Monthly",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "startDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.startMonthly }}"
+            },
+            {
+              "name": "endDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.endMonthly }}"
+            },
+            {
+              "name": "addDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.addMonthly }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "98ffdc18-a7d5-4b79-a6bb-3a302cd43df3",
+      "name": "Names0",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1104,
+        512
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Names": {
+      "main": [
+        [
+          {
+            "node": "If typeXLSX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "If typeYear",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Dates": {
+      "main": [
+        [
+          {
+            "node": "If Monthly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk - Days": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Download - CSV": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Download - XLSX": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If typeXLSX": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Download - XLSX",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow Download - CSV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If typeYear": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk - Year",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If typeMonth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk - Year": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If typeMonth": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk - yearMonth",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read/Write Files from Disk - Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk - yearMonth": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Monthly": {
+      "main": [
+        [
+          {
+            "node": "Names0",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names0": {
+      "main": [
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b641a364-47eb-4255-8c3b-6a71ba32d0f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "jOnPTiKi651EtVZl",
+  "tags": []
+}

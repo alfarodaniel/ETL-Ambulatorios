@@ -16,8 +16,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        380,
-        540
+        384,
+        544
       ]
     },
     {
@@ -30,7 +30,7 @@
             },
             {
               "name": "fileName",
-              "value": "={{ $('Procedures').item.json.fileName }}_{{ $json.startMonthly }}_{{ $json.endMonthly }}"
+              "value": "={{ $('Procedures').item.json.fileName }}_{{ $json.startDate }}_{{ $json.endDate }}"
             },
             {
               "name": "extName",
@@ -86,8 +86,8 @@
       "name": "Names",
       "type": "n8n-nodes-base.set",
       "position": [
-        980,
-        540
+        1600,
+        544
       ],
       "typeVersion": 1
     },
@@ -108,46 +108,25 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX_SENDAS\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,             \n              Monthly: \"Yes\",\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
+        "jsCode": "return [\n    { json: { procedureName: \"SP_GI_EGRESO_HOSPITALARIO_POR_SERVICIO\", \n              fileName: \"egreso\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,             \n              Monthly: \"Yes\",\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} },\n    { json: { procedureName: \"SP_FA_TOTAL_PRODUCCION_DX_SENDAS\", \n              fileName: \"produccion\",\n              extName: \".xlsx\",\n              startDay: -1,\n              endDay: -1,\n              addDay: 1,             \n              noMonthly: \"Yes\",\n              folderID: \"014SRZLAP34J565SQUEJFICTCWIAELRI3L\"} }\n];"
       },
       "id": "17180b48-7346-42d9-8d47-30c80c7140b5",
       "name": "Procedures",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        580,
-        540
+        592,
+        544
       ]
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "08k9xdf0VByNBZM2",
+          "value": "QTjCC3jEMwJK3tZ4",
           "mode": "list",
-          "cachedResultName": "Fechas"
-        },
-        "mode": "each",
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "id": "9b07c76e-a027-46c0-85e7-43495dd98fdb",
-      "name": "Execute Workflow Fechas",
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.1,
-      "position": [
-        780,
-        540
-      ]
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "RF1SwhUOyNOyWOAW",
-          "mode": "list",
-          "cachedResultName": "Procedimiento ETL con EXE"
+          "cachedResultUrl": "/workflow/QTjCC3jEMwJK3tZ4",
+          "cachedResultName": "Procedimiento ETL con EXE con truncar"
         },
         "mode": "each",
         "options": {
@@ -159,8 +138,163 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.1,
       "position": [
-        1180,
-        540
+        1360,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        784,
+        544
+      ],
+      "id": "dafebdd0-5f54-4465-addc-d31c68995a28",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Loop Over Items').item.json.Monthly }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "37551562-2a75-40a1-988c-436b0d40d9a5",
+      "name": "If Monthly",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "startDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.startMonthly }}"
+            },
+            {
+              "name": "endDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.endMonthly }}"
+            },
+            {
+              "name": "addDate",
+              "value": "={{ $('Execute Workflow Dates').item.json.addMonthly }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7c86006c-9ee5-473d-8136-b3a56e1bdcf9",
+      "name": "Names0",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1360,
+        544
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/08k9xdf0VByNBZM2",
+          "cachedResultName": "Fechas"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "9b07c76e-a027-46c0-85e7-43495dd98fdb",
+      "name": "Execute Workflow Dates",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $json.procedureName }}",
+              "rightValue": "SP_FA_TOTAL_PRODUCCION_DX_SENDAS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3de78db8-bcb6-4633-a593-bc80b0acc822",
+      "name": "If Produccion",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0GZC2HmaN6HG4RmY",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/0GZC2HmaN6HG4RmY",
+          "cachedResultName": "Procedimiento SQL a XLSX con truncar"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d50a8a58-c4c0-493b-b3f4-b37f268a9e0b",
+      "name": "Execute Workflow SQL a XLSX",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        992
       ]
     }
   ],
@@ -181,7 +315,7 @@
       "main": [
         [
           {
-            "node": "Execute Workflow ETL con EXE",
+            "node": "If Produccion",
             "type": "main",
             "index": 0
           }
@@ -192,18 +326,99 @@
       "main": [
         [
           {
-            "node": "Execute Workflow Fechas",
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Execute Workflow Fechas": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Execute Workflow Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Monthly": {
+      "main": [
+        [
+          {
+            "node": "Names0",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Names0": {
       "main": [
         [
           {
             "node": "Names",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow ETL con EXE": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Dates": {
+      "main": [
+        [
+          {
+            "node": "If Monthly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Produccion": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow ETL con EXE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow SQL a XLSX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow SQL a XLSX": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -217,7 +432,7 @@
     "timezone": "America/Bogota",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "d36f88d7-0562-429f-90e8-44b54cb9f392",
+  "versionId": "8aa135aa-f060-480a-a39e-7932d9522f1f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"

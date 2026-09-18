@@ -1,0 +1,315 @@
+{
+  "name": "SecopII",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 23
+            }
+          ]
+        }
+      },
+      "id": "5676842f-1de6-4fd3-8ae3-ed02f9a4edfa",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Variables",
+        "height": 202,
+        "width": 542
+      },
+      "id": "4983e7b6-1590-406d-ac74-0a4a6921782b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        464,
+        736
+      ],
+      "id": "28559e3b-35e2-4fd2-956f-d300899a7552",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "command": "=cd \"C:/gestion/Cuadros de control/Contratos/\" && SecopII.exe --report \"{{ $('Reports').item.json.report }}\" --filter \"{{ $('Reports').item.json.filter }}\" --output \"{{ $json.fileName }}{{ $json.extName }}\""
+      },
+      "id": "bf1c8496-7804-40ce-a1ff-7eabedb8facc",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        656,
+        736
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { startDay: -1,\n              endDay: -1,\n              addDay: 1 }}\n];"
+      },
+      "id": "3884f9cd-0a6f-4bb3-9340-ee37a836c373",
+      "name": "Days",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "08k9xdf0VByNBZM2",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/08k9xdf0VByNBZM2",
+          "cachedResultName": "Fechas"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "a9532e01-7f41-4c22-95f2-fa970f18f736",
+      "name": "Execute Workflow Dates",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        656,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n    { json: { report: \"jbjy-vk9h\", \n              fileName: \"ContratosElectronicos\",\n              extName: \".csv\",\n              filter: \"nit_entidad eq 900971006\"} },\n    { json: { report: \"cb9c-h8sn\", \n              fileName: \"Adiciones_\" + $input.first().json.yearMonth,\n              extName: \".csv\",\n              filter: \"fecharegistro ge '\" + $input.first().json.startMonthly.substring(0, 4) + \"-\" + $input.first().json.startMonthly.substring(4, 6) + \"-\" + $input.first().json.startMonthly.substring(6, 8) + \"T00:00:00' and fecharegistro le '\" + $input.first().json.endMonthly.substring(0, 4) + \"-\" + $input.first().json.endMonthly.substring(4, 6) + \"-\" + $input.first().json.endMonthly.substring(6, 8) + \"T23:59:59'\",\n              folderID: \"014SRZLAIFDS6Z3IBCN5HKO5SBY5YGTI5I\"} },\n    { json: { report: \"dmgg-8hin\", \n              fileName: \"ArchivosDescargaDesde2025_\" + $input.first().json.yearMonth,\n              extName: \".csv\",\n              filter: \"nit_entidad eq 900971006 and fecha_carga ge '\" + $input.first().json.startMonthly.substring(0, 4) + \"-\" + $input.first().json.startMonthly.substring(4, 6) + \"-\" + $input.first().json.startMonthly.substring(6, 8) + \"T00:00:00' and fecha_carga le '\" + $input.first().json.endMonthly.substring(0, 4) + \"-\" + $input.first().json.endMonthly.substring(4, 6) + \"-\" + $input.first().json.endMonthly.substring(6, 8) + \"T23:59:59'\",\n              folderID: \"014SRZLAIB5DHNX4SJ3FFZOMLHBU4GZ3DF\"} },\n    { json: { report: \"u8cx-r425\", \n              fileName: \"ModificacionesContratos_\" + $input.first().json.yearMonth,\n              extName: \".csv\",\n              filter: \"codigo_empresa_creadora eq 702729500 and fecha_de_carga ge '\" + $input.first().json.startMonthly.substring(0, 4) + \"-\" + $input.first().json.startMonthly.substring(4, 6) + \"-\" + $input.first().json.startMonthly.substring(6, 8) + \"T00:00:00' and fecha_de_carga le '\" + $input.first().json.endMonthly.substring(0, 4) + \"-\" + $input.first().json.endMonthly.substring(4, 6) + \"-\" + $input.first().json.endMonthly.substring(6, 8) + \"T23:59:59'\",\n              folderID: \"014SRZLAO6PM7KOR5G7RD2S5H34AYEBWBL\"} }\n];"
+      },
+      "id": "8cef1464-acc2-462e-b2a8-eac90be9967b",
+      "name": "Reports",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "parentId": "={{ $('Loop Over Items').item.json.folderID }}",
+        "binaryData": true
+      },
+      "id": "d87b95ee-40aa-467b-813d-de69e2f0a582",
+      "name": "Microsoft OneDrive",
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        736
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "XBqwz5AhoXkFFYNT",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileSelector": "=C:/gestion/Cuadros de control/Contratos/{{ $('Loop Over Items').item.json.fileName }}{{ $('Loop Over Items').item.json.extName }}",
+        "options": {
+          "fileExtension": ".xlsx",
+          "fileName": "={{ $('Loop Over Items').item.json.fileName }}{{ $('Loop Over Items').item.json.extName }}",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "ee2e54fe-15ce-419b-b1cd-3ee78c957cf5",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        736
+      ],
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "478170f4-537a-42d4-8627-b7e93fa58d25",
+              "leftValue": "={{ $('Loop Over Items').item.json.folderID }}",
+              "rightValue": "SP_FA_TOTAL_PRODUCCION_DX_SENDAS",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "213a332f-f8a2-4db0-becf-3952f69dc4b9",
+      "name": "If folderID",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        736
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "If folderID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Days": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Dates": {
+      "main": [
+        [
+          {
+            "node": "Reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reports": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Microsoft OneDrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft OneDrive": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If folderID": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedMode": "fixed",
+    "availableInMCP": false
+  },
+  "versionId": "451993da-4400-439e-ab1f-c25ce09e9e72",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e8cb6ce5b93c95bf063ce3b0d0459c218844b41c936a1e3d6979571250c96d64"
+  },
+  "id": "yr3CyR2Lg0Jhel1p",
+  "tags": []
+}
